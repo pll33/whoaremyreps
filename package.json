@@ -1,5 +1,5 @@
 {
-  "name": "whoaremyreps",
+  "name": "WhoAreMyReps",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Peter Liu <me@peterliu.xyz>",
@@ -10,7 +10,14 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "vue": "^2.0.1"
+    "font-awesome": "^4.7.0",
+    "font-awesome-loader": "^1.0.1",
+    "node-sass": "^3.13.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
+    "vue": "^2.0.1",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
