@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import App from './App'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
@@ -10,6 +11,7 @@ import RepresentativeLevel from './components/views/RepresentativeLevel'
 // import Representative from './components/views/Representative'
 import RepresentativePage from './components/views/RepresentativePage'
 
+Vue.use(Vuex)
 Vue.use(VueResource)
 Vue.use(VueRouter)
 
@@ -25,10 +27,21 @@ const router = new VueRouter({
   ]
 })
 
+const store = new Vuex.Store({
+  state: {
+    // data: {}
+    count: 0
+  },
+  mutations: {
+    increment: count => count++
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   template: '<App/>',
   components: { App },
-  router
+  router,
+  store
 })

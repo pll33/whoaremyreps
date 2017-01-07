@@ -1,18 +1,22 @@
 <template>
-  <div id="app">
+  <div class="app">
     <div class="locate-inputs">
       <span class="search-icon"><i class="fa" v-bind:class="iconType"></i></span>
       <input class="search-input" v-bind:class="{ error: locationInput.locateError }" v-on:keyup.enter="submit" type="text" v-bind:placeholder="locationInput.placeholder" v-model="locationInput.value" />
       <button v-on:click="locate"><i class="fa fa-map-marker"></i></button>
     </div>
     <ul class="nav">
-      <li v-if="apiData.civic.federal.length > 0"><a href="#">Federal</a></li>
-      <li v-if="apiData.civic.state.length > 0"><a href="#">State</a></li>
-      <li v-if="apiData.civic.district.length > 0"><a href="#">District</a></li>
-      <li v-if="apiData.civic.county.length > 0"><a href="#">County</a></li>
-      <li v-if="apiData.civic.local.length > 0"><a href="#">Local</a></li>
-      <li v-if="apiData.civic.other.length > 0"><a href="#">Other</a></li>
+      <li v-if="apiData.civic.federal.length > 0"><router-link to="/reps/federal">Federal</router-link></li>
+      <li v-if="apiData.civic.state.length > 0"><router-link to="/reps/state">State</router-link></li>
+      <li v-if="apiData.civic.district.length > 0"><router-link to="/reps/district">Congressional District</router-link></li>
+      <li v-if="apiData.civic.county.length > 0"><router-link to="/reps/county">County</router-link></li>
+      <li v-if="apiData.civic.local.length > 0"><router-link to="/reps/local">Local</router-link></li>
+      <li v-if="apiData.civic.other.length > 0"><router-link to="/reps/other">Other</router-link></li>
+      <li><router-link to="/test">test</router-link></li>
     </ul>
+    <main class="container">
+      <router-view></router-view>
+    </main>
     <!--<div>
       <img src="./assets/logo.png">
       <hello></hello>
@@ -90,10 +94,12 @@ export default {
       // var county = offices.filter(function (o) { return !o.levels && o.divisionId.search(/county/g) >= 0 })
       // var local = offices.filter(function (o) { if (o.levels) { return o.levels.indexOf('locality') >= 0 } })
 
-      console.log('fed: ', federal)
+      console.log('fed: ', federal.map(function (a) { console.log(a.name); return a }))
       console.log('state: ', state)
+      console.log('district: ', district)
       console.log('county: ', county)
       console.log('local: ', local)
+      console.log('other: ', other)
       this.apiData.civic = { federal, state, district, county, local, other }
     },
     _locateSuccess: function (pos) {
@@ -169,7 +175,15 @@ export default {
           stSenate: {}
         },
         gmaps: {},
-        civic: {}
+        civic: {
+          federal: [],
+          state: [],
+          district: [],
+          county: [],
+          local: [],
+          other: []
+
+        }
       },
       locationData: {
         position: {}
