@@ -1,27 +1,25 @@
 <template>
   <div>
-    <h2 style="text-transform:capitalize">{{ level }}</h2>
-    <representative-list :level="level" :reps-data="repsData"></representative-list>
+    <div class="rep-list" v-bind:class="'rep-list-'+level">
+      <representative v-for="rep in repsData" :rep="rep"></representative>
+    </div>
   </div>
 </template>
-<script>
-import RepresentativeList from '../components/RepresentativeList'
-import store from '../store'
 
-/* get reps data from store for $route.params.level */
+<script>
+import store from '../store'
+import Representative from '../components/Representative'
+
 export default {
   name: 'representative-level',
   components: {
-    RepresentativeList
-  },
-  data: function () {
-    return {
-      level: this.$route.params.level
-    }
+    Representative
   },
   computed: {
+    level () {
+      return this.$route.params.level
+    },
     repsData () {
-      console.log(store.state)
       return store.state.apiData.levels[this.level]
     }
   }
