@@ -1,36 +1,75 @@
 <template>
   <div class="app">
-    <div class="locate-inputs">
-      <span class="search-icon"><i class="fa" v-bind:class="iconType"></i></span>
-      <input class="search-input" v-bind:class="{ error: locationInput.locateError }" v-on:keyup.enter="submit" type="text" v-bind:placeholder="locationInput.placeholder" v-model="locationInput.value" />
-      <button v-on:click="locate"><i class="fa fa-map-marker"></i></button>
-    </div>
-    <ul class="nav">
-      <li v-if="apiData.civic.federal.length > 0"><router-link to="/reps/federal">Federal</router-link></li>
-      <li v-if="apiData.civic.state.length > 0"><router-link to="/reps/state">State</router-link></li>
-      <li v-if="apiData.civic.district.length > 0"><router-link to="/reps/district">Congressional District</router-link></li>
-      <li v-if="apiData.civic.county.length > 0"><router-link to="/reps/county">County</router-link></li>
-      <li v-if="apiData.civic.local.length > 0"><router-link to="/reps/local">Local</router-link></li>
-      <li v-if="apiData.civic.other.length > 0"><router-link to="/reps/other">Other</router-link></li>
-      <li><router-link to="/test">test</router-link></li>
-    </ul>
-    <main class="container">
-      <router-view></router-view>
+    <header>
+      <div class="header">
+        <h1>Who Are My Representatives?</h1>
+        <!-- <location-input></location-input> -->
+        <div class="locate-inputs">
+          <span class="search-icon"><i class="fa" v-bind:class="iconType"></i></span>
+          <input class="search-input" v-bind:class="{ error: locationInput.locateError }" v-on:keyup.enter="submit" type="text" v-bind:placeholder="locationInput.placeholder" v-model="locationInput.value" />
+          <button v-on:click="locate"><i class="fa fa-map-marker"></i></button>
+        </div>
+      </div>
+      <ul class="nav">
+        <li><router-link to="/reps/all">All</router-link></li>
+        <li v-if="apiData.civic.federal.length > 0"><router-link to="/reps/federal">Federal</router-link></li>
+        <li v-if="apiData.civic.state.length > 0"><router-link to="/reps/state">State</router-link></li>
+        <li v-if="apiData.civic.local.length > 0"><router-link to="/reps/local">Local</router-link></li>
+      </ul>
+    </header>
+    <main>
+      <div class="container">
+        <transition name="fade" mode="out-in">
+          <router-view class="view"></router-view>
+        </transition>
+      </div>
+      <div class="container">
+        <h3>Federal</h3>
+        <div class="rep-list rep-list-federal" v-if="apiData.civic.federal" style="text-align: left;">
+          <router-link to="/reps/federal/rep" tag="div" class="representative" v-for="rep in apiData.civic.federal">
+            <i class="fa fa-square" v-bind:class="'party-'+(rep.party).toLowerCase()" v-bind:title="rep.party"></i>
+            <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}</span>
+            <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
+          </router-link>
+        </div>
+
+        <h3>State</h3>
+        <div class="rep-list rep-list-state" v-if="apiData.civic.state" style="text-align: left;">
+          <div class="representative" v-for="rep in apiData.civic.state">
+            <i class="fa fa-square" v-bind:class="'party-'+(rep.party).toLowerCase()" v-bind:title="rep.party"></i>
+            <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}</span>
+            <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
+          </div>
+        </div>
+
+        <h3>Local</h3>
+        <div class="rep-list rep-list-local" v-if="apiData.civic.local" style="text-align:left">
+          <div class="representative" v-for="rep in apiData.civic.local">
+            <i class="fa fa-square" v-bind:class="'party-'+(rep.party).toLowerCase()" v-bind:title="rep.party"></i>
+            <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}</span>
+            <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
+          </div>
+        </div>
+      </div>
     </main>
     <!--<div>
       <img src="./assets/logo.png">
       <hello></hello>
     </div>-->
+    <footer>
+        <a href="#">Privacy Policy</a>
+    </footer>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
+import LocationInput from './components/LocationInput'
+import Hello from './views/Hello'
 
 export default {
   name: 'app',
   components: {
-    Hello
+    Hello, LocationInput
   },
   mounted: function () {
     this._retrieveLocalStorage()
@@ -67,26 +106,33 @@ export default {
       var officials = civicApiResponse.body.officials
       var federal = []
       var state = []
-      var district = []
-      var county = []
       var local = []
-      var other = []
+      var all = []
 
-      var levelOfficials = function (level, idxs) { if (idxs) { for (let i of idxs) { level.push(officials[i]) } } }
+      var levelOfficials = function (level, title, idxs) {
+        if (idxs) {
+          for (let i of idxs) {
+            officials[i].position = title
+            level.push(officials[i])
+            all.push(officials[i])
+          }
+        }
+      }
 
       for (let office of offices) {
         let olv = office.levels
         let ooi = office.officialIndices
+        let title = office.name
+        console.log(office)
         if (olv) {
-          if (olv.indexOf('country') >= 0) levelOfficials(federal, ooi)
-          else if (olv.indexOf('administrativeArea1') >= 0) levelOfficials(state, ooi)
-          else if (olv.indexOf('locality') >= 0) levelOfficials(local, ooi)
-          else levelOfficials(other, ooi)
+          if (olv.indexOf('country') >= 0) levelOfficials(federal, title, ooi)
+          else if (olv.indexOf('administrativeArea1') >= 0) levelOfficials(state, title, ooi)
+          else if (olv.indexOf('locality') >= 0) levelOfficials(local, title, ooi)
+          else levelOfficials(local, title, ooi)
         } else {
-          if (office.divisionId.search(/county|district|place/g) === -1) levelOfficials(state, ooi)
-          else if (office.divisionId.search(/ward|place/g) >= 0) levelOfficials(local, ooi)
-          else if (office.divisionId.search(/district/g) >= 0) levelOfficials(district, ooi)
-          else levelOfficials(county, ooi)
+          if (office.divisionId.search(/county|district|place/g) === -1) levelOfficials(state, title, ooi)
+          else if (office.divisionId.search(/ward|place/g) >= 0) levelOfficials(local, title, ooi)
+          else levelOfficials(local, title, ooi)
         }
       }
       // var federal = offices.filter(function (o) { if (o.levels) { return o.levels.indexOf('country') >= 0 } })
@@ -95,12 +141,10 @@ export default {
       // var local = offices.filter(function (o) { if (o.levels) { return o.levels.indexOf('locality') >= 0 } })
 
       console.log('fed: ', federal.map(function (a) { console.log(a.name); return a }))
-      console.log('state: ', state)
-      console.log('district: ', district)
-      console.log('county: ', county)
-      console.log('local: ', local)
-      console.log('other: ', other)
-      this.apiData.civic = { federal, state, district, county, local, other }
+      console.log('state: ', state.map(function (a) { console.log(a.name); return a }))
+      console.log('local: ', local.map(function (a) { console.log(a.name); return a }))
+      this.apiData.civic = { federal, state, local, all }
+      // store.commit('SET_REP_LEVELS', { federal, state, local })
     },
     _locateSuccess: function (pos) {
       if (this.locationInput.locateError) this.locationInput.locateError = false
@@ -122,7 +166,7 @@ export default {
             var userAddress = results['formatted_address']
             locationInput.value = userAddress
             this._saveToLocalStorage(userAddress)
-            this.civicLookup(userAddress)
+            // this.civicLookup(userAddress)
             console.log('address: ', results['formatted_address'])
           }
         } else {
@@ -153,6 +197,7 @@ export default {
     },
     submit: function () {
       this.locationInput.searchType = 'search'
+      this.civicLookup(this.locationInput.value)
     },
     locate: function () {
       navigator.geolocation.getCurrentPosition(this._locateSuccess, this._locateError)
@@ -167,7 +212,7 @@ export default {
         searchType: 'search',
         value: ''
       },
-      apiKey: '',
+      apiKey: 'AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4',
       apiData: {
         dmaps: {
           usCongress: {},
@@ -181,8 +226,8 @@ export default {
           district: [],
           county: [],
           local: [],
-          other: []
-
+          other: [],
+          all: []
         }
       },
       locationData: {
@@ -207,14 +252,38 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  margin: 0;
+  /*background-color: #ECF0F1;*/
+}
+
+header {
+  background-color: #ECF0F1;
+  /*color: #FFF;*/
+}
+
+.nav {
+  background-color: darken(#ECF0F1, 5%);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 #app {
   color: #2c3e50;
 }
 
+h1 {
+  margin: 0;
+}
+
+.header {
+  padding: 10px 0;
+}
+
 .locate-inputs {
-  margin: 10px 0;
+  /*margin: 10px 0;*/
 
   input,
   button {
@@ -280,10 +349,86 @@ ul.nav {
   padding: 0;
   display: flex;
   justify-content: center;
+  /*border-top: 2px solid black;*/
+  /*border-bottom: 2px solid black;*/
+  border-bottom: 1px solid black;
+  font-size: 0;
 }
 
 ul.nav li {
-  margin: 0 5px;
+  /*border-left: 2px solid black;*/
+}
+
+ul.nav li:last-child {
+  /*border-right: 2px solid black;*/
+}
+
+ul.nav li a {
+  font-size: 24px;
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 10px 0;
+  width: 120px;
+}
+
+ul.nav li:hover {
+  background: darken(#ECF0F1, 10%);
+}
+
+ul.nav .router-link-active {
+  background: darken(#ECF0F1, 20%);
+}
+
+.fade-enter-active {
+  transition: all .2s ease;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+
+
+.rep-list .representative {
+  padding: 4px 8px;
+  border: 1px solid black;
+  border-top: 0;
+  cursor: pointer;
+}
+
+.rep-list .representative:first-child {
+  border-top: 1px solid black;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.rep-list .representative:last-child {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.representative:hover {
+  background-color: #DDD;
+}
+
+.representative i.fa-square {
+  margin-right: 2px;
+}
+
+.party-republican { 
+  color: #E74C3C;
+}
+.party-democratic { 
+  color: #3498DB;
+}
+
+.party-unknown {
+  color: #2c3e50;
+}
+
+.party-independent {
+  color: #ECF0F1;
 }
 
 </style>
