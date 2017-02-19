@@ -14,8 +14,9 @@ const state = {
     value: ''
   },
   apiData: {
-    representative: {},
+    representatives: {},
     levels: {
+      all: [],
       federal: [], // federal level: president, vp, congress
       state: [], // state level: governor, lt governor, state reps
       local: [], // local level:

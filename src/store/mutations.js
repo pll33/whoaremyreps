@@ -1,10 +1,10 @@
 import * as types from './mutation-types'
 
 export default {
-  [types.SET_REPRESENTATIVE] (state, { rep }) {
-    state.apiData.representative = rep
+  [types.SET_REPRESENTATIVES] (state, reps) {
+    state.apiData.representatives = reps
   },
-  [types.SET_REP_LEVELS] (state, { levels }) {
+  [types.SET_REP_LEVELS] (state, levels) {
     state.apiData.levels = levels
   },
   [types.SET_MAP_FEDERAL] (state, { map }) {

@@ -12,9 +12,9 @@
       </div>
       <ul class="nav">
         <li><router-link to="/reps/all">All</router-link></li>
-        <li v-if="apiData.civic.federal.length > 0"><router-link to="/reps/federal">Federal</router-link></li>
-        <li v-if="apiData.civic.state.length > 0"><router-link to="/reps/state">State</router-link></li>
-        <li v-if="apiData.civic.local.length > 0"><router-link to="/reps/local">Local</router-link></li>
+        <li v-if="federalList"><router-link to="/reps/federal">Federal</router-link></li>
+        <li v-if="stateList"><router-link to="/reps/state">State</router-link></li>
+        <li v-if="localList"><router-link to="/reps/local">Local</router-link></li>
       </ul>
     </header>
     <main>
@@ -63,13 +63,13 @@
 </template>
 
 <script>
+import store from './store'
 import LocationInput from './components/LocationInput'
-import Hello from './views/Hello'
 
 export default {
   name: 'app',
   components: {
-    Hello, LocationInput
+    LocationInput
   },
   mounted: function () {
     this._retrieveLocalStorage()
@@ -84,7 +84,8 @@ export default {
           this.locationInput.searchType = 'locate'
 
           // load civic data with stored address
-          this.civicLookup(storedData.userAddress)
+          // this.civicLookup(storedData.userAddress)
+          store.dispatch('fetchRepresentatives', { address: storedData.userAddress })
         }
       }
     },
@@ -108,11 +109,19 @@ export default {
       var state = []
       var local = []
       var all = []
+      var repPaths = {}
+
+      var createSlug = function (name) { /* url slug for representative */
+        return name.toLowerCase().replace(/\./g, '').replace(/[^a-z0-9+]+/gi, '-')
+      }
 
       var levelOfficials = function (level, title, idxs) {
         if (idxs) {
           for (let i of idxs) {
+            let path = createSlug(officials[i].name)
+
             officials[i].position = title
+            repPaths[path] = officials[i]
             level.push(officials[i])
             all.push(officials[i])
           }
@@ -143,6 +152,7 @@ export default {
       console.log('fed: ', federal.map(function (a) { console.log(a.name); return a }))
       console.log('state: ', state.map(function (a) { console.log(a.name); return a }))
       console.log('local: ', local.map(function (a) { console.log(a.name); return a }))
+      console.dir(repPaths)
       this.apiData.civic = { federal, state, local, all }
       // store.commit('SET_REP_LEVELS', { federal, state, local })
     },
@@ -241,6 +251,15 @@ export default {
         'fa-search': this.locationInput.searchType === 'search',
         'fa-location-arrow': this.locationInput.searchType === 'locate'
       }
+    },
+    federalList: function () {
+      return store.state.apiData.levels.federal.length > 0
+    },
+    stateList: function () {
+      return store.state.apiData.levels.state.length > 0
+    },
+    localList: function () {
+      return store.state.apiData.levels.local.length > 0
     }
   }
 }
@@ -282,6 +301,44 @@ h1 {
   padding: 10px 0;
 }
 
+ul.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid black;
+  font-size: 0;
+}
+
+ul.nav li a {
+  font-size: 24px;
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 10px 0;
+  width: 120px;
+}
+
+ul.nav li:hover {
+  background: darken(#ECF0F1, 10%);
+}
+
+ul.nav .router-link-active {
+  background: darken(#ECF0F1, 20%);
+}
+
+.fade-enter-active {
+  transition: all .2s ease;
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+/*
+ * LocationInput -- TO-DO: remove
+ */
 .locate-inputs {
   /*margin: 10px 0;*/
 
@@ -343,92 +400,33 @@ h1 {
   }
 }
 
-ul.nav {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  /*border-top: 2px solid black;*/
-  /*border-bottom: 2px solid black;*/
-  border-bottom: 1px solid black;
-  font-size: 0;
-}
-
-ul.nav li {
-  /*border-left: 2px solid black;*/
-}
-
-ul.nav li:last-child {
-  /*border-right: 2px solid black;*/
-}
-
-ul.nav li a {
-  font-size: 24px;
-  display: block;
-  color: black;
-  text-decoration: none;
-  padding: 10px 0;
-  width: 120px;
-}
-
-ul.nav li:hover {
-  background: darken(#ECF0F1, 10%);
-}
-
-ul.nav .router-link-active {
-  background: darken(#ECF0F1, 20%);
-}
-
-.fade-enter-active {
-  transition: all .2s ease;
-}
-
-.fade-enter, .fade-leave-active {
-  opacity: 0;
-}
-
-
-
+/*
+ * Representative -- TO-DO: remove
+ */
 .rep-list .representative {
   padding: 4px 8px;
   border: 1px solid black;
   border-top: 0;
   cursor: pointer;
 }
-
 .rep-list .representative:first-child {
   border-top: 1px solid black;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
-
 .rep-list .representative:last-child {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+.representative:hover { background-color: #DDD; }
 
-.representative:hover {
-  background-color: #DDD;
-}
-
-.representative i.fa-square {
-  margin-right: 2px;
-}
-
-.party-republican { 
-  color: #E74C3C;
-}
-.party-democratic { 
-  color: #3498DB;
-}
-
-.party-unknown {
-  color: #2c3e50;
-}
-
-.party-independent {
-  color: #ECF0F1;
-}
+/*
+ * PartyAffiliationMaker -- TO-DO: remove
+ */
+.representative i.fa-square { margin-right: 2px; }
+.party-republican { color: #E74C3C; }
+.party-democratic { color: #3498DB; }
+.party-unknown { color: #2c3e50; }
+.party-independent { color: #ECF0F1; }
 
 </style>
