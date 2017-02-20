@@ -5,18 +5,19 @@ Vue.use(Router)
 
 import Home from '../views/Home'
 import NotFound from '../views/NotFound'
+import PrivacyPolicy from '../views/PrivacyPolicy'
 import RepresentativeLevel from '../views/RepresentativeLevel'
 import RepresentativePage from '../views/RepresentativePage'
-// import Representative from '../views/Representative'
 
 export default new Router({
   mode: 'history',
   base: __dirname,
   routes: [
-    { path: '/', component: Home },
-    { path: '/reps', redirect: '/' },
-    { path: '/reps/:level', component: RepresentativeLevel },
-    { path: '/reps/:level/:representative', component: RepresentativePage },
+    { path: '/', name: 'home', component: Home },
+    { path: '/privacy', component: PrivacyPolicy },
+    { path: '/:level', component: RepresentativeLevel },
+    { path: '/:level/:rep', component: RepresentativePage },
+    // { path: '/:level/:rep/print', component: PrintRepresentative },
     { path: '*', component: NotFound }
   ]
 })

@@ -11,53 +11,22 @@
         </div>
       </div>
       <ul class="nav">
-        <li><router-link to="/reps/all">All</router-link></li>
-        <li v-if="federalList"><router-link to="/reps/federal">Federal</router-link></li>
-        <li v-if="stateList"><router-link to="/reps/state">State</router-link></li>
-        <li v-if="localList"><router-link to="/reps/local">Local</router-link></li>
+        <li><router-link to="/all">All</router-link></li>
+        <li v-if="federalList"><router-link to="/federal">Federal</router-link></li>
+        <li v-if="stateList"><router-link to="/state">State</router-link></li>
+        <li v-if="localList"><router-link to="/local">Local</router-link></li>
       </ul>
     </header>
     <main>
       <div class="container">
         <transition name="fade" mode="out-in">
-          <router-view class="view"></router-view>
+          <router-view></router-view>
         </transition>
       </div>
-      <div class="container">
-        <h3>Federal</h3>
-        <div class="rep-list rep-list-federal" v-if="apiData.civic.federal" style="text-align: left;">
-          <router-link to="/reps/federal/rep" tag="div" class="representative" v-for="rep in apiData.civic.federal">
-            <i class="fa fa-square" v-bind:class="'party-'+(rep.party).toLowerCase()" v-bind:title="rep.party"></i>
-            <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}</span>
-            <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
-          </router-link>
-        </div>
-
-        <h3>State</h3>
-        <div class="rep-list rep-list-state" v-if="apiData.civic.state" style="text-align: left;">
-          <div class="representative" v-for="rep in apiData.civic.state">
-            <i class="fa fa-square" v-bind:class="'party-'+(rep.party).toLowerCase()" v-bind:title="rep.party"></i>
-            <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}</span>
-            <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
-          </div>
-        </div>
-
-        <h3>Local</h3>
-        <div class="rep-list rep-list-local" v-if="apiData.civic.local" style="text-align:left">
-          <div class="representative" v-for="rep in apiData.civic.local">
-            <i class="fa fa-square" v-bind:class="'party-'+(rep.party).toLowerCase()" v-bind:title="rep.party"></i>
-            <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}</span>
-            <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
-          </div>
-        </div>
-      </div>
     </main>
-    <!--<div>
-      <img src="./assets/logo.png">
-      <hello></hello>
-    </div>-->
     <footer>
-        <a href="#">Privacy Policy</a>
+        <router-link to="/about">About</router-link> |
+        <router-link to="/privacy">Privacy Policy</router-link>
     </footer>
   </div>
 </template>
@@ -71,7 +40,7 @@ export default {
   components: {
     LocationInput
   },
-  mounted: function () {
+  created: function () {
     this._retrieveLocalStorage()
   },
   methods: {
@@ -307,7 +276,7 @@ ul.nav {
   padding: 0;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid black;
+  /*border-bottom: 1px solid black;*/
   font-size: 0;
 }
 
@@ -399,34 +368,4 @@ ul.nav .router-link-active {
     background: #CCC;
   }
 }
-
-/*
- * Representative -- TO-DO: remove
- */
-.rep-list .representative {
-  padding: 4px 8px;
-  border: 1px solid black;
-  border-top: 0;
-  cursor: pointer;
-}
-.rep-list .representative:first-child {
-  border-top: 1px solid black;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-}
-.rep-list .representative:last-child {
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-}
-.representative:hover { background-color: #DDD; }
-
-/*
- * PartyAffiliationMaker -- TO-DO: remove
- */
-.representative i.fa-square { margin-right: 2px; }
-.party-republican { color: #E74C3C; }
-.party-democratic { color: #3498DB; }
-.party-unknown { color: #2c3e50; }
-.party-independent { color: #ECF0F1; }
-
 </style>
