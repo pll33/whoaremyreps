@@ -1,17 +1,18 @@
 <template>
   <div class="locate-inputs">
+    <button v-on:click="locate"><i class="fa fa-map-marker"></i></button>
     <span class="search-icon"><i class="fa" v-bind:class="iconType"></i></span>
     <input class="search-input" v-bind:class="{ error: locationInput.locateError }" v-on:keyup.enter="submit" type="text" v-bind:placeholder="locationInput.placeholder" v-model="locationInput.value" />
-    <button v-on:click="locate"><i class="fa fa-map-marker"></i></button>
+    <button v-on:click="search"><i class="fa fa-search"></i></button>
   </div>
 </template>
 
 
 <script>
-// import { setUserLocation, setUserAddress } from '../store/actions'
+// import { fetchGoogleCivicData, setUserLocation, setUserAddress } from '../store/actions'
 
 export default {
-  mounted: function () {
+  created: function () {
     this._retrieveLocalStorage()
   },
   methods: {
@@ -24,7 +25,7 @@ export default {
           this.locationInput.searchType = 'locate'
 
           // load civic data with stored address
-          this.civicLookup(storedData.userAddress)
+          this.$store.dispatch('fetchGoogleCivicData', { address: storedData.userAddress })
         }
       }
     },
@@ -68,7 +69,6 @@ export default {
           locationInput.value = pos.coords.latitude + ', ' + pos.coords.longitude
         }
       }, function (response) {
-        // error
         console.log('error:', response)
       })
     },
@@ -78,6 +78,8 @@ export default {
     locate: function () {
       navigator.geolocation.getCurrentPosition(this._locateSuccess, this._locateError)
       this.locationInput.placeholder = 'Loading address...'
+    },
+    search: function () {
     }
   },
   data: function () {
@@ -103,8 +105,6 @@ export default {
 
 <style lang="scss">
 .locate-inputs {
-  /*margin: 10px 0;*/
-
   input,
   button {
     font-size: 1em;
@@ -123,12 +123,16 @@ export default {
   line-height: 30px;
   box-sizing: border-box;
   padding: 0 15px 0 30px;
-  border: 1px solid #e3e3e3;
+  border: 1px solid #AAA;
   outline: none;
   margin-right: 5px;
 
   &.error {
-    border: 1px solid #ff7b7b;
+    border-color: #ff7b7b;
+  }
+
+  &:focus {
+    border-color: #666;
   }
 }
 
@@ -137,10 +141,12 @@ export default {
   position: relative;
 
   &.fa-search {
+    padding-left: 14px;
     margin-right: -30px;
   }
 
   &.fa-location-arrow {
+    padding-left: 14px;
     margin-right: -28px;
   }
 }
@@ -148,11 +154,15 @@ export default {
 .locate-inputs button {
   height: 30px;
   width: 30px;
-  border-color: #e3e3e3;
+  border-color: #AAA;
   border-style: solid;
   border-width: 1px;
   transition: border-color 0.2s ease;
   background: #e3e3e3;
+
+  &:hover {
+    border-color: #666;
+  }
 
   &:focus {
     outline: none;
