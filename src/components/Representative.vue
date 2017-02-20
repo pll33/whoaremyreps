@@ -1,7 +1,6 @@
 <template>
-  <router-link tag="div" v-bind:to="slug" class="representative">
-    <!-- .representative bind additional class for democrat/republican/party affiliation-->
-    <party-affiliation-marker :party="party"></party-affiliation-marker>
+  <router-link tag="div" v-bind:to="rep.slug" class="representative" append>
+    <party-affiliation-marker :party="rep.party"></party-affiliation-marker>
     <span class="rep-name">{{ rep.name }}</span>
     <span class="rep-position">{{ rep.position }}</span>
   </router-link>
@@ -11,15 +10,11 @@
 import PartyAffiliationMarker from './PartyAffiliationMarker'
 
 export default {
+  name: 'representative',
   components: {
     PartyAffiliationMarker
   },
-  props: ['rep'],
-  computed: {
-    slug: function () {
-      /* url slug for representative */
-    }
-  }
+  props: ['rep']
 }
 </script>
 
@@ -29,23 +24,20 @@ export default {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
-
 .rep-list .representative:last-child {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
-
 .representative {
   padding: 4px 8px;
   border: 1px solid black;
   border-top: 0;
   cursor: pointer;
+  text-align: left;
 }
-
 .representative:hover {
   background-color: #DDD;
 }
-
 .representative i.fa-square {
   margin-right: 2px;
 }

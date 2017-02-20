@@ -1,10 +1,11 @@
 <template>
-  <i class="fa fa-square" v-bind:class="iconClass" v-bind:title="party"></i>
+  <i class="fa fa-square" v-bind:class="iconClass" v-bind:title="party"><span v-if="display_bool">{{ party }}</span></i>
 </template>
 
 <script>
+// TO-DO create a toggle to display marker with party title inside, or marker w/o title
 export default {
-  props: ['party'],
+  props: ['party', 'display_bool'],
   computed: {
     iconClass: function () {
       switch (this.party) {
