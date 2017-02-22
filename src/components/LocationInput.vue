@@ -25,7 +25,7 @@ export default {
           this.locationInput.searchType = 'locate'
 
           // load civic data with stored address
-          this.$store.dispatch('fetchGoogleCivicData', { address: storedData.userAddress })
+          this.$store.dispatch('fetchRepresentativesByAddress', { address: storedData.userAddress })
         }
       }
     },
@@ -45,14 +45,16 @@ export default {
     _locateSuccess: function (pos) {
       if (this.locationInput.locateError) this.locationInput.locateError = false
       var locationInput = this.locationInput
+      console.log(pos, pos.coords)
       this.locationData.position = (pos) ? pos.coords : null
       this.locationInput.searchType = 'locate'
 
       // send user position request to server, server calls google geocoding api and responds w/ address
       // https://maps.googleapis.com/maps/api/geocode/json?latlng= &key=
       var latlng = pos.coords.latitude + ',' + pos.coords.longitude
-      var apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=' + this.apiKey
+      var apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
 
+      this.$router.push('/')
       this.$http.get(apiCallUrl).then(function (response) {
         // success
         // console.log('success:', response)
@@ -62,6 +64,7 @@ export default {
             var userAddress = results['formatted_address']
             locationInput.value = userAddress
             this._saveToLocalStorage(userAddress)
+            this.$store.dispatch('fetchRepresentativesByAddress', { address: userAddress })
             // this.civicLookup(userAddress)
             // console.log('address: ', results['formatted_address'])
           }
@@ -89,7 +92,8 @@ export default {
         locateError: false,
         searchType: 'search',
         value: ''
-      }
+      },
+      locationData: {}
     }
   },
   computed: {
@@ -104,7 +108,15 @@ export default {
 </script>
 
 <style lang="scss">
+.start {
+  .locate-inputs {
+    transform: scale(1.25, 1.25);
+  }
+}
+
 .locate-inputs {
+  display: inline-block;
+
   input,
   button {
     font-size: 1em;
@@ -122,10 +134,10 @@ export default {
   height: 30px;
   line-height: 30px;
   box-sizing: border-box;
+  vertical-align: bottom;
   padding: 0 15px 0 30px;
   border: 1px solid #AAA;
   outline: none;
-  margin-right: 5px;
 
   &.error {
     border-color: #ff7b7b;
@@ -154,11 +166,16 @@ export default {
 .locate-inputs button {
   height: 30px;
   width: 30px;
-  border-color: #AAA;
-  border-style: solid;
-  border-width: 1px;
+  margin-left: 3px;
+  border: 1px solid #AAA;
   transition: border-color 0.2s ease;
   background: #e3e3e3;
+
+  i.fa-search {
+
+    vertical-align: top;
+    font-size: 15px;
+  }
 
   &:hover {
     border-color: #666;
