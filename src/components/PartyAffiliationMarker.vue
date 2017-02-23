@@ -3,13 +3,16 @@
 </template>
 
 <script>
-// TO-DO create a toggle to display marker with party title inside, or marker w/o title
+// TO-DO: css-only rectangle (with padding for display_bool)
+
+// TO-DO create a toggle based on display_bool to display marker with party name inside (no icon), or marker w/o title (icon)
 export default {
   props: ['party', 'display_bool'],
   computed: {
     iconClass: function () {
       switch (this.party) {
         case 'Democratic':
+        case 'Democrat':
           return 'party-democratic'
         case 'Republican':
           return 'party-republican'
@@ -41,4 +44,5 @@ export default {
 .party-vpp { color: #ffa7b6; /* pink */ } /* Vermont Progressive Party */
 .party-independent { color: #ECF0F1; }
 .party-unknown { color: #2c3e50; }
+.party-vacant { color: #EEE; }
 </style>
