@@ -20,7 +20,7 @@ export default {
   data: function () {
     return {
       loader: {
-        color: '#2C3E50'
+        color: '#3C4E6F'
       }
     }
   },

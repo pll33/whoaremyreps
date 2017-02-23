@@ -4,13 +4,13 @@
       <party-affiliation-marker :party="rep.party" :display_bool="false"></party-affiliation-marker>
       <span class="name" style="font-size: 18px; font-weight: bold"> {{ rep.name }}<br></span>
       <span class="position" style="font-size:16px; font-style: italic">{{ rep.position }}<br></span>
-      <img v-bind:src="rep.photoUrl">
+      <img v-if="rep.photoUrl" v-bind:src="rep.photoUrl">
       <div class="address">
         <span>{{rep.address[0].line1}}<br></span>
         <span v-if="rep.address[0].line2">{{rep.address[0].line2}}<br></span>
         <span>{{rep.address[0].city}}, {{rep.address[0].state}} {{rep.address[0].zip}}</span>
       </div>
-      <div>
+      <div v-if="rep.channels">
         <ul class="social-media">
           <social-media-icon v-for="channel in rep.channels" :channel="channel"></social-media-icon>
         </ul>
@@ -21,7 +21,7 @@
       <div class="phones" v-for="num in rep.phones">
         <span><i class="fa fa-phone"></i> {{ num }}</span>
       </div>
-      <button><i class="fa fa-address-card-o"></i> Save contact info to phone</button>
+      <v-card :rep="rep"></v-card>
       <button><i class="fa fa-pencil-square-o"></i> Email contact info</button>
       <div v-if="">
       </div>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-// TO-DO: left/right arrow button-down goes to previous/next representatives
 // TO-DO: if "United States Senate" or contains "United States House of Representatives", pull up list of congressional bills
 // if "PA State Senate" or "PA State House"
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
@@ -46,24 +45,33 @@ export default {
   components: {
     ClipLoader, PartyAffiliationMarker, SocialMediaIcon, vCard
   },
-  data: function () {
+  data () {
     return {
       rep_check: false,
       loader: {
-        color: '#2C3E50'
+        color: '#3C4E6F'
       }
     }
   },
+  beforeRouteLeave (to, from, next) {
+    console.log(to, from)
+    next()
+  },
   computed: {
     rep_exists () {
+      // TO-DO: rewrite to better determine if current rep page exists in store representatives
+      // existing BUG: when clicking to rep page, then quickly clicking to another page within the 10s timeout, the next
+      // page will be '/undefined' (use navigation guards?)
       let level = this.$store.state.route.params.level
       let path = this.$store.state.route.path
+      console.log(path)
       if (!this.rep && !this.rep_check) {
         this.rep_check = true
         setTimeout(() => {
           let rep = this.$store.getters.getRepresentativePage
           let samePath = path === this.$store.state.route.path
           if (!rep && samePath) {
+            console.log(this.$store.state.route.path)
             console.log('ERROR: Unable to find this representative for your location. Redirecting back to /' + level)
             this.$router.push('/' + level)
           }
@@ -73,8 +81,6 @@ export default {
     },
     rep () {
       return this.$store.getters.getRepresentativePage
-    },
-    vcard () {
     }
   }
 }
