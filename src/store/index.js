@@ -7,12 +7,6 @@ import mutations from './mutations'
 Vue.use(Vuex)
 
 const state = {
-  locationInput: {
-    placeholder: 'Your address',
-    locateError: false,
-    searchType: 'search',
-    value: ''
-  },
   apiData: {
     representatives: {},
     levels: {
@@ -26,10 +20,30 @@ const state = {
       usHouse: {},
       stateHouse: {},
       stateSenate: {}
+    },
+    composition: {
+      federal: {
+        head: '', // political party for head of government
+        senate: {},
+        house: {}
+      },
+      state: {
+        head: '', // political party for head of government
+        upper: {
+          name: '',
+          majority: '',
+          parties: {}
+        },
+        lower: {
+          name: '',
+          majority: '',
+          parties: {}
+        }
+      }
     }
   },
   locationData: {
-    position: {},
+    location: {},
     address: ''
   }
 }
