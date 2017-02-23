@@ -4,7 +4,7 @@
       <div class="header">
         <h1>Who Are My Representatives?</h1>
         <location-input></location-input>
-        <clip-loader v-once v-if="allList && landingPage" :loading="loading" :color="loader.color" :size="loader.size"></clip-loader>
+        <clip-loader v-once v-if="allList && landingPage" :loading="loading" :color="loader.color_white" :size="loader.size"></clip-loader>
       </div>
       <ul class="nav navbar" v-if="!landingPage">
         <li v-if="allList"><router-link to="/all">All</router-link></li>
@@ -14,7 +14,7 @@
       </ul>
     </header>
     <main class="container">
-      <loader-redirect v-if="!landingPage && homePage" :color="loader.color"></loader-redirect>
+      <loader-redirect v-if="!landingPage && homePage" :color="loader.color_blue"></loader-redirect>
       <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -46,7 +46,8 @@ export default {
         landOnce: false
       },
       loader: {
-        color: '#2C3E50'
+        color_blue: '#3C4E6F',
+        color_white: '#ECF0F1'
       }
     }
   },
@@ -100,7 +101,8 @@ export default {
 
 <style lang="scss">
 $base-font-size: 16px;
-$color-navy-blue: #2C3E50;
+$color-light-navy: #3C4E6F;
+$color-dark-navy: #2C3E50;
 $color-dark-blue: #2980B9;
 $color-blue: #3498DB;
 $color-red: #E74C3C;
@@ -142,12 +144,16 @@ body {
     width: 100%;
     position: absolute;
     bottom: 1vh;
+
+    a {
+      color: white;
+    }
   }
 }
 
 header {
-  background-color: $color-off-white;
-  /*color: #FFF;*/
+  background-color: $color-light-navy;
+  color: #FFF;
 }
 
 ul.nav {
@@ -160,24 +166,28 @@ ul.nav {
 }
 
 ul.navbar {
-  background-color: darken($color-off-white, 5%);
+  background-color: lighten($color-light-navy, 8%);
 }
 
 ul.navbar li a {
+  width: 125px;
   font-size: 24px;
   display: block;
-  color: black;
   text-decoration: none;
+  color: white;
   padding: 10px 0;
-  width: 120px;
 }
 
 ul.navbar li:hover {
-  background: darken($color-off-white, 10%);
+  background: lighten($color-light-navy, 12%);
 }
 
 ul.navbar .router-link-active {
-  background: darken($color-off-white, 20%);
+  background: lighten($color-light-navy, 20%);
+}
+
+ul.nav-simple .router-link-active {
+  font-weight: bold;
 }
 
 main {
@@ -189,19 +199,20 @@ main {
 }
 
 #app {
-  color: $color-navy-blue;
+  color: $color-dark-navy;
 }
 
-h1 {
-  margin: 0;
-}
-h2 {
+h1, h2 {
   margin: 0;
 }
 
 .header,
 .footer {
-  padding: 10px 0;
+  padding: 15px 0;
+}
+
+.footer a {
+  color: black;
 }
 
 ul.nav-simple li a {

@@ -6,12 +6,13 @@ import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
 export default {
   name: 'loader-redirect',
-  props: ['color'],
+  props: ['color', 'timeout'],
   components: { ClipLoader },
-  mounted: function () {
+  mounted () {
+    let time = this.timeout || 1500
     setTimeout(() => {
       this.$router.replace('/all')
-    }, 1500)
+    }, time)
   }
 }
 </script>
