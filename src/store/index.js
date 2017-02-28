@@ -25,7 +25,8 @@ const state = {
       federal: {
         head: '', // political party for head of government
         senate: {},
-        house: {}
+        house: {},
+        loaded: false
       },
       state: {
         name: '', // legislature name
@@ -39,7 +40,8 @@ const state = {
           name: '',
           majority: '',
           parties: {}
-        }
+        },
+        loaded: false
       }
     }
   },

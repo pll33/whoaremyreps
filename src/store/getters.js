@@ -26,6 +26,14 @@ export const getLegislativeComposition = (state) => {
   return state.apiData.composition
 }
 
+export const getPresidentParty = (state) => {
+  return state.apiData.levels.federal.filter(rep => rep.position.indexOf('President') !== -1)[0].party
+}
+
+export const getGovernorParty = (state) => {
+  return state.apiData.levels.state.filter(rep => rep.position === 'Governor')[0].party
+}
+
 export const getUserAddress = (state) => {
   return state.locationData.position
 }
