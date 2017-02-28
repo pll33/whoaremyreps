@@ -1,14 +1,13 @@
 <template>
-  <router-link tag="div" v-bind:to="rep.slug" class="representative" append>
+  <router-link tag="li" v-bind:to="rep.slug" class="rep-item" append>
     <party-affiliation-marker :party="rep.party"></party-affiliation-marker>
     <span class="rep-name">{{ rep.name }}</span>
     <span class="rep-position">{{ rep.position }}</span>
-    <span class="rep-info" v-if="rep.extraInfo"><i class="fa fa-info-circle"></i></span>
+    <span class="rep-info-icon" v-if="rep.extraInfo"><i class="fa fa-info-circle"></i></span>
   </router-link>
 </template>
 
 <script>
-// TO-DO: extra info icon for Presidents and Legislators, float:right for icon
 import PartyAffiliationMarker from './PartyAffiliationMarker'
 
 export default {
@@ -23,19 +22,19 @@ export default {
 <style lang="scss">
 $border-color: #CCC;
 
-.rep-list .representative:last-child {
-  border-bottom: 0;
-}
-.representative {
+.rep-item {
   padding: 4px 8px;
   border-bottom: 1px solid $border-color;
   cursor: pointer;
   text-align: left;
 }
-.representative:hover {
+.rep-item:last-child {
+  border-bottom: 0;
+}
+.rep-item:hover {
   background-color: #EEE;
 }
-.representative i.fa-square {
+.rep-item i.fa-square {
   margin-right: 2px;
 }
 .rep-name {
@@ -46,7 +45,7 @@ $border-color: #CCC;
   font-size: 16px;
   font-style: italic;
 }
-.rep-info {
+.rep-info-icon {
   float: right;
 
   .fa {
