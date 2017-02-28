@@ -9,13 +9,10 @@ export default {
   props: ['color', 'timeout'],
   components: { ClipLoader },
   mounted () {
-    let time = this.timeout || 1500
+    let time = this.timeout || 2000
     setTimeout(() => {
       this.$router.replace('/all')
     }, time)
   }
 }
 </script>
-
-<style>
-</style>
