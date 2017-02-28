@@ -10,23 +10,26 @@ export default {
   props: ['party', 'display_bool'],
   computed: {
     iconClass: function () {
-      switch (this.party) {
-        case 'Democratic':
-        case 'Democrat':
+      let party = this.party.toLowerCase()
+      switch (party) {
+        case 'democratic':
+        case 'democrat':
+        case 'd':
           return 'party-democratic'
-        case 'Republican':
+        case 'republican':
+        case 'r':
           return 'party-republican'
-        case 'Libertarian':
+        case 'libertarian':
           return 'party-libertarian'
-        case 'Green':
+        case 'green':
           return 'party-green'
-        case 'Socialist':
+        case 'socialist':
           return 'party-socialist'
-        case 'Progressive/Democratic':
+        case 'progressive/democratic':
           return 'party-vpp'
-        case 'Independent':
+        case 'independent':
           return 'party-independent'
-        case 'Unknown':
+        case 'unknown':
         default:
           return 'party-unknown'
       }
@@ -42,7 +45,7 @@ export default {
 .party-green { color: #98db34; /* green */ }
 .party-socialist { color: #972e1a; /* dark red */ }
 .party-vpp { color: #ffa7b6; /* pink */ } /* Vermont Progressive Party */
-.party-independent { color: #ECF0F1; }
+.party-independent { color: darken(#ECF0F1,5%); }
 .party-unknown { color: #2c3e50; }
 .party-vacant { color: #EEE; }
 </style>
