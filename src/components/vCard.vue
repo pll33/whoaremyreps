@@ -1,8 +1,9 @@
 <template>
-  <button><i class="fa fa-address-card-o"></i> Save contact info to phone</button>
+  <button class="btn"><i class="fa fa-address-card-o"></i> Save contact info to phone</button>
 </template>
 <script>
-// TO-DO:
+// TO-DO: create vcard data and save to file on button click
+
 export default {
   name: 'v-card',
   props: ['rep']

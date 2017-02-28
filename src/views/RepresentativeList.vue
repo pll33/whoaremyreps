@@ -1,8 +1,8 @@
 <template>
-  <div class="rep-list" v-bind:class="'rep-list-'+level">
+  <ul class="rep-list">
     <representative-item v-for="rep in repsData" :rep="rep"></representative-item>
     <clip-loader v-if="!repsData" :loading="loading" :color="loader.color" :size="loader.size"></clip-loader>
-  </div>
+  </ul>
 </template>
 
 <script>
@@ -15,7 +15,7 @@ export default {
     ClipLoader, RepresentativeItem
   },
   mounted: function () {
-    // return to /all if nothing loads
+    // TO-DO: return to /all if nothing loads
   },
   data: function () {
     return {
@@ -31,6 +31,10 @@ export default {
   }
 }
 </script>
-
 <style>
+ul.rep-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
 </style>
