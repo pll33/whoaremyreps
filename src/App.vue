@@ -22,7 +22,7 @@
     <footer class="footer">
       <ul class="nav nav-simple">
         <li><router-link to="/about">About</router-link></li>
-        <li v-if="allList"><router-link to="/composition">Legislative Composition</router-link></li>
+        <li v-if="!landingPage && allList"><router-link to="/composition">Legislative Composition</router-link></li>
         <li><router-link to="/privacy">Privacy Policy</router-link></li>
       </ul>
     </footer>
@@ -53,6 +53,7 @@ export default {
   },
   computed: {
     landingPage () {
+      // TO-DO: rewrite to make use of navigation guards
       if (!this.landing.landOnce) {
         let reps = this.allList
         let home = store.state.route.path === '/'
@@ -218,6 +219,26 @@ h1, h2 {
 ul.nav-simple li a {
   font-size: $base-font-size;
   padding: 0 4px;
+}
+
+.btn {
+  display: block;
+  margin: 0;
+  padding: 10px 15px;
+  outline: none;
+  border: 1px solid darken($color-off-white, 20%);
+  background: $color-off-white;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  margin: 10px auto;
+
+  &:hover {
+    background: darken($color-off-white, 10%);
+  }
+
+  &:active {
+    background: darken($color-off-white, 20%);
+  }
 }
 
 .fade-enter-active {
