@@ -9,8 +9,6 @@
 
 
 <script>
-// import { fetchGoogleCivicData, setUserLocation, setUserAddress } from '../store/actions'
-
 export default {
   created () {
     this._retrieveLocalStorage()
@@ -40,24 +38,32 @@ export default {
     }
   },
   methods: {
+    _getAbbreviation (addressComponents) {
+      let addrComponents = addressComponents.filter(item => item.types.indexOf('administrative_area_level_1') > -1)
+      return (addrComponents && addrComponents.length === 1) ? addrComponents[0].short_name : ''
+    },
     _retrieveLocalStorage: function () {
-      // get saved address from local storage (avoid extra GMAPS api call)
+      // get saved address from local storage
       if (typeof window.localStorage !== 'undefined') {
-        var storedData = JSON.parse(window.localStorage.getItem('__whoaremyreps__userData'))
-        if (storedData && storedData.userAddress) {
-          this.locationInput.value = storedData.userAddress
+        let storedData = JSON.parse(window.localStorage.getItem('__whoaremyreps__userData'))
+        if (storedData && storedData.address) {
+          this.locationInput.value = storedData.address
           this.locationInput.searchType = 'stored'
 
-          // load civic data with stored address
-          this.$store.dispatch('setUserAddress', { address: storedData.userAddress })
-          this.$store.dispatch('fetchRepresentativesByAddress', { address: storedData.userAddress })
+          this.$store.dispatch('setUserInfo', {
+            address: storedData.address,
+            location: storedData.geolocation,
+            abbreviation: storedData.abbreviation
+          })
+          this.$store.dispatch('fetchRepresentativesByAddress', { address: storedData.address })
         }
       }
     },
-    _saveToLocalStorage: function (item) {
+    _saveToLocalStorage: function (address, geolocation, abbreviation) {
       if (typeof window.localStorage !== 'undefined') {
-        var timestamp = new Date().getTime()
-        var dataObj = { userAddress: item, timestamp }
+        console.log('saving to localStorage:', address, geolocation, abbreviation) // TO-DO: eventually remove
+        let timestamp = new Date().getTime()
+        let dataObj = { address, geolocation, abbreviation, timestamp }
         window.localStorage.setItem('__whoaremyreps__userData', JSON.stringify(dataObj))
       }
     },
@@ -65,47 +71,75 @@ export default {
       if (err) {
         this.locationInput.locateError = true
         this.locationInput.placeholder = 'Your address'
+        console.log('Geolocation error: ' + err)
       }
     },
     _locateSuccess: function (pos) {
-      console.log(pos, pos.coords)
+      // console.log(pos, pos.coords)
       this.locationData.position = (pos) ? pos.coords : null
       this.locationInput.locateError = false
       this.locationInput.searchType = 'locate'
 
       // send user position request to server, server calls google geocoding api and responds w/ address
       // https://maps.googleapis.com/maps/api/geocode/json?latlng= &key=
-      var latlng = pos.coords.latitude + ',' + pos.coords.longitude
-      var apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
+      let latlng = pos.coords.latitude + ',' + pos.coords.longitude
+      let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
 
-      this.$http.get(apiCallUrl).then(function (response) {
+      this.$http.get(apiCallUrl).then((response) => {
         if (response && response.ok) {
-          let results = response.body.results[0]
-          if (results['formatted_address']) {
-            var userAddress = results['formatted_address']
+          if (response.body.results.length > 0) {
+            let results = response.body.results[0]
+            let userAddress = results['formatted_address']
+            let abbreviation = this._getAbbreviation(results.address_components)
+
             this.locationInput.value = userAddress
-            this._saveToLocalStorage(userAddress)
-            this.$store.dispatch('setUserLocation', { location: results })
-            this.$store.dispatch('setUserAddress', { address: userAddress })
+            this._saveToLocalStorage(userAddress, latlng, abbreviation)
+            this.$store.dispatch('setUserInfo', {
+              address: userAddress,
+              location: latlng,
+              abbreviation
+            })
             this.$store.dispatch('fetchRepresentativesByAddress', { address: userAddress })
           }
         } else {
           this.locationInput.value = pos.coords.latitude + ', ' + pos.coords.longitude
         }
-      }, function (response) {
+      }, (response) => {
         console.log('GMAPS error:', response)
       })
     },
     submit: function () {
-      let inputAddress = this.locationInput.value
       this.locationInput.locateError = false
       this.locationInput.searchType = 'search'
-      this._saveToLocalStorage(inputAddress)
-      this.$store.dispatch('setUserAddress', { address: inputAddress })
-      this.$store.dispatch('fetchRepresentativesByAddress', { address: inputAddress })
+
+      let inAddress = encodeURIComponent(this.locationInput.value)
+      let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + inAddress + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
+      this.$http.get(apiCallUrl).then((response) => {
+        if (response && response.ok) {
+          if (response.body.results.length > 0) {
+            let results = response.body.results[0]
+            let userAddress = results['formatted_address']
+            let latlng = results.geometry.location.lat + ',' + results.geometry.location.lng // not as accurate as brower geolocation
+            let abbreviation = this._getAbbreviation(results.address_components)
+
+            this.locationInput.value = userAddress
+            this._saveToLocalStorage(userAddress, latlng, abbreviation)
+            this.$store.dispatch('setUserInfo', {
+              address: userAddress,
+              geolocation: latlng,
+              abbreviation
+            })
+            this.$store.dispatch('fetchRepresentativesByAddress', { address: userAddress })
+          }
+        }
+      }, (response) => {
+        console.log('GMAPS error:', response)
+      })
     },
     locate: function () {
       navigator.geolocation.getCurrentPosition(this._locateSuccess, this._locateError)
+      this.locationInput.locateError = false
+      this.locationInput.searchType = 'locate'
       this.locationInput.placeholder = 'Loading address...'
       this.locationInput.value = ''
     }
@@ -115,6 +149,7 @@ export default {
 
 <style lang="scss">
 $input-outline-color: #FFF;
+$hover-border-color: #333;
 
 .start {
   .locate-inputs {
@@ -130,14 +165,14 @@ $input-outline-color: #FFF;
   input,
   button {
     font-size: 1em;
-    border: 1px solid #FFF;
+    border: 2px solid #DDD;
     border-radius: 15px;
     transition: border-color 0.6s ease;
   }
 
   input:focus,
   button:focus {
-    border-color: #333;
+    border-color: $hover-border-color;
   }
 }
 
@@ -160,20 +195,18 @@ $input-outline-color: #FFF;
 
   &.fa {
     line-height: 30px;
+    padding-left: 16px;
   }
 
   &.fa-search {
-    padding-left: 14px;
     margin-right: -30px;
   }
 
   &.fa-location-arrow {
-    padding-left: 14px;
     margin-right: -28px;
   }
 
   &.fa-thumb-tack {
-    padding-left: 14px;
     margin-right: -28px;
   }
 }
@@ -182,8 +215,9 @@ $input-outline-color: #FFF;
   height: 30px;
   width: 30px;
   margin-left: 3px;
-  transition: border-color 0.2s ease;
   background: #FFF;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
 
   i.fa-search {
     vertical-align: top;
@@ -191,7 +225,7 @@ $input-outline-color: #FFF;
   }
 
   &:hover {
-    border-color: #000;
+    border-color: $hover-border-color;
   }
 
   &:focus {
@@ -199,7 +233,7 @@ $input-outline-color: #FFF;
   }
 
   &:active {
-    background: #DDD;
+    background: #666;
   }
 }
 </style>
