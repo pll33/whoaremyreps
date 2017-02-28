@@ -16,11 +16,11 @@ const state = {
       local: [], // local level:
       other: []
     },
-    districtMaps: {
-      usHouse: {},
-      stateHouse: {},
-      stateSenate: {}
-    },
+    // districtMaps: {
+    //   usHouse: {},
+    //   stateHouse: {},
+    //   stateSenate: {}
+    // },
     composition: {
       federal: {
         head: '', // political party for head of government
@@ -28,9 +28,10 @@ const state = {
         house: {}
       },
       state: {
+        name: '', // legislature name
         head: '', // political party for head of government
         upper: {
-          name: '',
+          name: '', // chamber name
           majority: '',
           parties: {}
         },
@@ -43,7 +44,8 @@ const state = {
     }
   },
   locationData: {
-    location: {},
+    abbreviation: '',
+    geo: '',
     address: ''
   }
 }

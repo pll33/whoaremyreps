@@ -4,6 +4,10 @@
 
 // export const getVCard =
 
+export const getRepresentatives = (state) => {
+  return state.apiData.representatives
+}
+
 export const getRepresentativePage = (state) => {
   return state.apiData.representatives[state.route.params.rep]
 }

@@ -7,6 +7,10 @@ export default {
   [types.SET_REP_LEVELS] (state, levels) {
     state.apiData.levels = levels
   },
+  [types.SET_REP_INFO] (state, { slug, key, results }) {
+    let repInfo = state.apiData.representatives[slug].info
+    repInfo[key] = results
+  },
   [types.SET_COMPOSITION_FED] (state, composition) {
     state.apiData.composition.federal = composition
   },
@@ -27,5 +31,10 @@ export default {
   },
   [types.SET_USER_ADDRESS] (state, addressString) {
     state.locationData.address = addressString
+  },
+  [types.SET_USER_INFO] (state, { address, location, abbreviation }) {
+    state.locationData.address = address
+    state.locationData.location = location
+    state.locationData.abbreviation = abbreviation
   }
 }
