@@ -4,12 +4,16 @@ export default {
   [types.SET_REPRESENTATIVES] (state, reps) {
     state.apiData.representatives = reps
   },
+  [types.SET_EXECUTIVES] (state, execs) {
+    state.apiData.executives = execs
+  },
   [types.SET_REP_LEVELS] (state, levels) {
     state.apiData.levels = levels
   },
   [types.SET_REP_INFO] (state, { slug, key, results }) {
     let repInfo = state.apiData.representatives[slug].info
     repInfo[key] = results
+    repInfo.loaded = true
   },
   [types.SET_COMPOSITION_FED] (state, composition) {
     state.apiData.composition.federal = composition
