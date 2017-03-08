@@ -1,8 +1,10 @@
 <template>
   <router-link tag="li" v-bind:to="rep.slug" class="rep-item" append>
     <party-affiliation-marker :party="rep.party"></party-affiliation-marker>
-    <span class="rep-name">{{ rep.name }}</span>
-    <span class="rep-position">{{ rep.position }}</span>
+    <span>
+      <span class="rep-name">{{ rep.name }}</span>
+      <span class="rep-position">{{ rep.position }}</span>
+    </span>
     <span class="rep-info-icon" v-if="rep.extraInfo"><i class="fa fa-info-circle"></i></span>
   </router-link>
 </template>
