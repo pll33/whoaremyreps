@@ -44,18 +44,23 @@ export default {
     },
     _retrieveLocalStorage: function () {
       // get saved address from local storage
+      let _store = this.$store
       if (typeof window.localStorage !== 'undefined') {
         let storedData = JSON.parse(window.localStorage.getItem('__whoaremyreps__userData'))
         if (storedData && storedData.address) {
           this.locationInput.value = storedData.address
           this.locationInput.searchType = 'stored'
 
-          this.$store.dispatch('setUserInfo', {
+          _store.dispatch('setUserInfo', {
             address: storedData.address,
             location: storedData.geolocation,
             abbreviation: storedData.abbreviation
           })
-          this.$store.dispatch('fetchRepresentativesByAddress', { address: storedData.address })
+
+          _store.dispatch('fetchRepresentativesByAddress', {
+            address: storedData.address,
+            abbreviation: storedData.abbreviation
+          })
         }
       }
     },
@@ -85,6 +90,7 @@ export default {
       let latlng = pos.coords.latitude + ',' + pos.coords.longitude
       let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
 
+      let _store = this.$store
       this.$http.get(apiCallUrl).then((response) => {
         if (response && response.ok) {
           if (response.body.results.length > 0) {
@@ -94,12 +100,15 @@ export default {
 
             this.locationInput.value = userAddress
             this._saveToLocalStorage(userAddress, latlng, abbreviation)
-            this.$store.dispatch('setUserInfo', {
+            _store.dispatch('setUserInfo', {
               address: userAddress,
               location: latlng,
               abbreviation
             })
-            this.$store.dispatch('fetchRepresentativesByAddress', { address: userAddress })
+            _store.dispatch('fetchRepresentativesByAddress', {
+              address: userAddress,
+              abbreviation
+            })
           }
         } else {
           this.locationInput.value = pos.coords.latitude + ', ' + pos.coords.longitude
@@ -114,6 +123,7 @@ export default {
 
       let inAddress = encodeURIComponent(this.locationInput.value)
       let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + inAddress + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
+      let _store = this.$store
       this.$http.get(apiCallUrl).then((response) => {
         if (response && response.ok) {
           if (response.body.results.length > 0) {
@@ -124,12 +134,15 @@ export default {
 
             this.locationInput.value = userAddress
             this._saveToLocalStorage(userAddress, latlng, abbreviation)
-            this.$store.dispatch('setUserInfo', {
+            _store.dispatch('setUserInfo', {
               address: userAddress,
               geolocation: latlng,
               abbreviation
             })
-            this.$store.dispatch('fetchRepresentativesByAddress', { address: userAddress })
+            _store.dispatch('fetchRepresentativesByAddress', {
+              address: userAddress,
+              abbreviation
+            })
           }
         }
       }, (response) => {
@@ -233,7 +246,7 @@ $hover-border-color: #333;
   }
 
   &:active {
-    background: #666;
+    background: #AAA;
   }
 }
 </style>
