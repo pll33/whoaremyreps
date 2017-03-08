@@ -9,7 +9,9 @@
 export default {
   props: ['party', 'display_bool'],
   computed: {
-    iconClass: function () {
+    iconClass () {
+      if (!this.party) return 'party-unknown'
+
       let party = this.party.toLowerCase()
       switch (party) {
         case 'democratic':
@@ -45,7 +47,7 @@ export default {
 .party-green { color: #98db34; /* green */ }
 .party-socialist { color: #972e1a; /* dark red */ }
 .party-vpp { color: #ffa7b6; /* pink */ } /* Vermont Progressive Party */
-.party-independent { color: darken(#ECF0F1,5%); }
+.party-independent { color: darken(#ECF0F1,10%); }
 .party-unknown { color: #2c3e50; }
 .party-vacant { color: #EEE; }
 </style>
