@@ -7,115 +7,149 @@ US (lower only): https://congress.api.sunlightfoundation.com/legislators?chamber
 State: https://openstates.org/api/v1/legislators/?state=pa&fields=party,chamber
 State (upper only): https://openstates.org/api/v1/legislators/?state=pa&chamber=upper&fields=party
 
-
 Possible page layout:
 
 [Rep], [Dem], [Ind] == use PartyAffiliationMarker
 [Vac] == vacant
 (majority) = background color for majority party
 
-TABLE
-
-      |   US Senate   |   US House    |   State Senate    |   State House     |
-===============================================================================
-      |               |               |                   |
-YOUR  |   [Dem] 1     |   [Rep] 13    |     [Rep] 34      |     [Rep] 121
-STATE |   [Rep] 1     |   [Dem] 5     |     [Dem] 16      |     [Dem] 82
-      |               |               |                   |
-_______________________________________________________________________________
-         (majority)      (majority)        (majority)         (majority)
-
-possibly include president / governor for party affiliation
 -->
 
 <template>
-  <div>
+  <div class="leg-composition">
     <h2>Legislative Composition</h2>
-
-    <div class="federal"> <!-- v-if="composition.federal" -->
-      <h3>Federal</h3>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th>President</th>
-            <th>Senate</th>
-            <th>House</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>State</td>
-            <td>1
-              <span></span>
-            </td>
-            <td>2
-             <!-- <span v-for="party in federal.senate"></span> -->
-            </td>
-            <td>3
-             <!-- <span v-for="party in federal.house"></span> -->
-            </td>
-          </tr>
-          <tr>
-            <td>Total</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <div class="state"><!-- v-if="composition.state" -->
-      <h3>State</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Governor</th>
-            <th>State Upper</th><!-- State Upper -->
-            <th>State Lower</th><!-- State Lower -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>2
-             <!-- <span v-for="party in state.upper"></span> -->
-            </td>
-            <td>3
-             <!-- <span v-for="party in state.lower"></span> -->
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+    <div>
+      <div class="federal" v-if="composition.federal">
+        <h3>US Congress</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>President</th>
+              <th>Senate</th>
+              <th>House</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <party-affiliation-marker :party="composition.federal.head"></party-affiliation-marker>
+              </td>
+              <td>
+                <div>
+                  <span v-for="(value, key) in composition.federal.senate.parties">
+                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
+                  </span>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <span v-for="(value, key) in composition.federal.house.parties">
+                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="state" v-if="composition.state">
+        <h3>{{ composition.state.name }}</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Governor</th>
+              <th>{{ composition.state.upper.name }}</th><!-- State Upper -->
+              <th v-if="composition.state.lower.count > 0">{{ composition.state.lower.name }}</th><!-- State Lower -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <party-affiliation-marker :party="composition.state.head"></party-affiliation-marker>
+              </td>
+              <td>
+                <div>
+                  <span v-for="(value, key) in composition.state.upper.parties">
+                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
+                  </span>
+                </div>
+              </td>
+              <td v-if="composition.state.lower.count > 0">
+                <div>
+                  <span v-for="(value, key) in composition.state.lower.parties">
+                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+import PartyAffiliationMarker from '../components/PartyAffiliationMarker'
 
 export default {
   name: 'legislative-composition',
-  components: { ClipLoader },
-  computed: {
-    composition () {
-      return this.$store.getters.getLegislativeComposition
+  components: { PartyAffiliationMarker },
+  data () {
+    return {
+      composition: {},
+      error: null
     }
+  },
+  // beforeRouteEnter (to, from, next) {
+  // },
+  // watch: {
+  //   $route () {
+  //     this.pageData = null
+  //     api.get
+  //   }
+  // }
+  // components: { ClipLoader },
+  //
+  //
+  /* handle data load
+   *    if store.apiData.composition exists, use store data
+   *    else fetchComposition API data
+   */
+  mounted () {
+    this.composition = this.$store.getters.getLegislativeComposition
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
+.leg-composition {
   h3 {
     margin-top: 15px;
-    margin-bottom: 0;
+    margin-bottom: 5px;
   }
 
   table {
     margin: 0 auto;
+
+    th {
+      padding: 0 20px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 10px 20px;
+    }
+
+    div {
+      text-align: left;
+    }
+
+    i {
+      vertical-align: middle;
+      font-size: 32px;
+    }
   }
+}
 </style>
