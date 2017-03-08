@@ -1,15 +1,18 @@
 <template>
   <!--
     made with Civic Information Project, Vuejs
-    APIs: ProPublica, OpenStates, OpenSecrets
+    APIs: Civic Information, ProPublica, Sunlight Foundation, OpenStates, Federal Register
 
-    info@whoaremyreps.com
+    contact: info@whoaremyreps.com
+    report errors: errors@whoaremyreps.com
 
-    donate / tip
-
+    TO-DO: this page
    -->
   <div>
     <h2>About</h2>
+    <p>WhoAreMyReps is a </p>
+    <p>Made with Google Civic Information Project API, Sunlight Foundation APIs</p>
+    <router-link to="/resources">Additional resources</router-link>
   </div>
 </template>
 <script>
