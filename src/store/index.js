@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as getters from './getters'
+import getters from './getters'
 import * as actions from './actions'
 import mutations from './mutations'
 
@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const state = {
   apiData: {
     representatives: {},
+    executives: {},
     levels: {
       all: [],
       federal: [], // federal level: president, vp, congress
@@ -25,8 +26,7 @@ const state = {
       federal: {
         head: '', // political party for head of government
         senate: {},
-        house: {},
-        loaded: false
+        house: {}
       },
       state: {
         name: '', // legislature name
@@ -40,8 +40,7 @@ const state = {
           name: '',
           majority: '',
           parties: {}
-        },
-        loaded: false
+        }
       }
     }
   },

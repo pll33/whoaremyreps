@@ -22,13 +22,13 @@ export default {
     return state.apiData.composition
   },
   getPresidentParty (state) {
-    let execs = state.apiData.levels.execs
+    let execs = state.apiData.levels.executives
     if (execs) {
       return state.apiData.representatives[execs.president].party
     }
   },
   getGovernorParty (state) {
-    let execs = state.apiData.levels.execs
+    let execs = state.apiData.levels.executives
     if (execs) {
       return state.apiData.representatives[execs.governor].party
     }
