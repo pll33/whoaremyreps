@@ -155,6 +155,8 @@ body {
 header {
   background-color: $color-light-navy;
   color: #FFF;
+
+  h1 { font-weight: 600; }
 }
 
 ul.nav {
@@ -233,7 +235,7 @@ ul.nav-simple li a {
   margin: 10px auto;
 
   &:hover {
-    background: darken($color-off-white, 10%);
+    background: darken($color-off-white, 5%);
   }
 
   &:active {
