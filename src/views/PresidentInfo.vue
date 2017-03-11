@@ -45,33 +45,6 @@
         </table>
       </div>
 
-      <div v-if="info && info.notices">
-        <h3>Presidential Notices</h3>
-        <table class="table-left-2">
-          <tr>
-            <th>Date</th>
-            <th>Title</th>
-          </tr>
-          <tr v-for="doc in info.notices">
-            <td>{{ doc.publication_date }}</td>
-            <td><a :href="doc.html_url" target="_blank" rel="nofollow noreferrer">{{ doc.title }}</a></td>
-          </tr>
-        </table>
-      </div>
-
-      <div v-if="info && info.determinations">
-        <h3>Presidential Determinations</h3>
-        <table class="table-left-2">
-          <tr>
-            <th>Date</th>
-            <th>Title</th>
-          </tr>
-          <tr v-for="doc in info.determinations">
-            <td>{{ doc.publication_date }}</td>
-            <td><a :href="doc.html_url" target="_blank" rel="nofollow noreferrer">{{ doc.title }}</a></td>
-          </tr>
-        </table>
-      </div>
     </div>
     <div class="loading-info" v-else>
       <p>Loading additional information...</p>
