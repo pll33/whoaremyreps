@@ -10,10 +10,9 @@ export default {
   [types.SET_REP_LEVELS] (state, levels) {
     state.apiData.levels = levels
   },
-  [types.SET_REP_INFO] (state, { slug, key, results }) {
+  [types.SET_REP_INFO] (state, { slug, key, info }) {
     let repInfo = state.apiData.representatives[slug].info
-    repInfo[key] = results
-    repInfo.loaded = true
+    repInfo[key] = info
   },
   [types.SET_COMPOSITION_FED] (state, composition) {
     state.apiData.composition.federal = composition
