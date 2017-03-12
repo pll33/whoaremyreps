@@ -13,15 +13,10 @@ const state = {
     levels: {
       all: [],
       federal: [], // federal level: president, vp, congress
-      state: [], // state level: governor, lt governor, state reps
-      local: [], // local level:
+      state: [], // state level: governor, state reps
+      local: [], // local level: city council, county commissioner
       other: []
     },
-    // districtMaps: {
-    //   usHouse: {},
-    //   stateHouse: {},
-    //   stateSenate: {}
-    // },
     composition: {
       federal: {
         head: '', // political party for head of government

@@ -33,9 +33,6 @@ export default {
       return state.apiData.representatives[execs.governor].party
     }
   },
-  getVCard (state) {
-    // TO-DO
-  },
   getUserAddress (state) {
     return state.locationData.position
   },
