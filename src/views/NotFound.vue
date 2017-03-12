@@ -1,20 +1,15 @@
 <template>
-  <div class="page">
+  <div class="container">
     <h2>404 Not Found</h2>
-    <loader-redirect :timeout="5000" color="#3C4E6F"></loader-redirect>
-    <span>Redirecting in 5 seconds...</span>
+    <loader-redirect :timeout="5000" color="#455A80"></loader-redirect>
+    <span>Redirecting to <router-link to="/all">/all</router-link> in 5 seconds...</span>
   </div>
 </template>
 
 <script>
 import LoaderRedirect from '../components/LoaderRedirect'
-
 export default {
   name: 'not-found',
-  components: { LoaderRedirect },
-  beforeRouteLeave (to, from, next) {
-    console.log(to, from)
-    next()
-  }
+  components: { LoaderRedirect }
 }
 </script>
