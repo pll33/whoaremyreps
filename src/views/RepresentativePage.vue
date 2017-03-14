@@ -1,16 +1,25 @@
 <template>
-  <div class="rep-container">
+  <div>
     <div class="rep-page" v-if="rep" v-once>
-      <party-affiliation-marker :party="rep.party" :display_bool="false"></party-affiliation-marker>
-      <span class="name"> {{ rep.name }}<br></span>
-      <span class="position">{{ rep.position }}<br></span>
+      <div class="rep-name">
+        <party-affiliation-marker :party="rep.party"></party-affiliation-marker>
+        <span class="name"> {{ rep.name }}<br></span>
+        <span class="position">{{ rep.position }}<br></span>
+      </div>
       <div class="rep-info">
         <div class="rep-main">
-          <img v-if="rep.photoUrl" v-bind:src="rep.photoUrl">
+          <span v-if="rep.photoUrl"><img v-bind:src="rep.photoUrl"></span>
           <div class="address" v-if="rep.address">
-            <span>{{rep.address[0].line1}}<br></span>
-            <span v-if="rep.address[0].line2">{{rep.address[0].line2}}<br></span>
-            <span>{{rep.address[0].city}}, {{rep.address[0].state}} {{rep.address[0].zip}}</span>
+            <div v-if="rep.address[0].city">
+              <span>{{rep.address[0].line1}}<br></span>
+              <span v-if="rep.address[0].line2">{{rep.address[0].line2}}<br></span>
+              <span>{{rep.address[0].city}}, {{rep.address[0].state}} {{rep.address[0].zip}}</span>
+            </div>
+            <div v-else>
+              <span>{{rep.address[0].line1}}<br></span>
+              <span v-if="rep.address[0].line2">{{rep.address[0].line2}}<br></span>
+              <span>{{rep.address[0].state}} {{rep.address[0].zip}}</span>
+            </div>
           </div>
           <div v-if="rep.channels">
             <ul class="social-media">
@@ -23,36 +32,30 @@
           <div class="phones" v-for="num in rep.phones">
             <span><i class="fa fa-phone"></i> {{ num }}</span>
           </div>
-          <button v-if="rep.address || rep.channels" class="btn"><i class="fa fa-envelope-o"></i> Send contact info via email</button>
-          <v-card v-if="rep.address || rep.channels" :rep="rep"></v-card>
         </div>
         <div class="rep-detail" v-if="rep.extraInfo">
-          <president-info v-if="isHeadOfGov && isFederal" :slug="rep.slug"></president-info>
-          <governor-info v-else-if="isHeadOfGov && !isFederal"></governor-info>
-          <legislator-info-federal v-else-if="isFederal"
-            :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party" :ocd="rep.ocd_id">
-          </legislator-info-federal>
-          <legislator-info-state v-else-if="!isFederal"
-            :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party"></legislator-info-state>
+          <keep-alive>
+            <president-info v-if="isHeadOfGov && isFederal" :slug="rep.slug"></president-info>
+            <governor-info v-else-if="isHeadOfGov && !isFederal" :slug="rep.slug"></governor-info>
+            <legislator-info-federal v-else-if="isFederal"
+              :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party" :ocd="rep.ocd_id">
+            </legislator-info-federal>
+            <legislator-info-state v-else-if="!isFederal"
+              :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party"></legislator-info-state>
+          </keep-alive>
         </div>
         <div class="no-info" v-if="!rep.address && !rep.channels">No contact information available.</div>
       </div>
     </div>
-    <div v-else>
+    <div class="text-center" v-else>
       <h2>Representative Not Found</h2>
       <router-link to="/all">Back to All</router-link>
-      <!-- <clip-loader v-if="!rep" :color="loader.color"></clip-loader> -->
-      <!-- <span>Redirecting to <router-link to="/all">/all</router-link> in 10 seconds...</span> -->
-      <!-- TO-DO: redirect to /all in x seconds if representative could not load -->
     </div>
   </div>
 </template>
 <script>
-// import store from '../store'
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 import PartyAffiliationMarker from '../components/PartyAffiliationMarker'
 import SocialMediaIcon from '../components/SocialMediaIcon'
-import vCard from '../components/vCard'
 import PresidentInfo from './PresidentInfo'
 import GovernorInfo from './GovernorInfo'
 import LegislatorInfoFederal from './LegislatorInfoFederal'
@@ -61,50 +64,16 @@ import LegislatorInfoState from './LegislatorInfoState'
 export default {
   name: 'representative-page',
   components: {
-    ClipLoader,
     PartyAffiliationMarker,
     SocialMediaIcon,
-    vCard,
     PresidentInfo,
     GovernorInfo,
     LegislatorInfoFederal,
     LegislatorInfoState
   },
-  data () {
-    return {
-      loader: {
-        color: '#3C4E6F'
-      }
-    }
-  },
   computed: {
-    // rep_exists () {
-    //   // return !!this.$store.getters.getRepresentativePage
-    //   // TO-DO: rewrite to better determine if current rep page exists in store representatives
-    //   // existing BUG: when clicking to rep page, then quickly clicking to another page within the 10s timeout, the next
-    //   // page will be '/undefined' (use navigation guards?)
-    //   let level = this.$store.state.route.params.level
-    //   let path = this.$store.state.route.path
-    //   console.log('before timeout path: ', path)
-    //   if (!this.rep_does_exist && !this.rep_check) {
-    //     this.rep_check = true
-    //     setTimeout(() => {
-    //       console.log('timeout, does exist? ', this.rep_does_exist)
-    //       let samePath = path === this.$store.state.route.path
-    //       if (!this.rep_does_exist && samePath) {
-    //         console.log('timeout path: ', this.$store.state.route.path)
-    //         console.log('ERROR: Unable to find this representative for your location. Redirecting back to /' + level)
-    //         this.$router.push('/' + level)
-    //       }
-    //     }, 15000)
-    //   }
-    //   return true
-    // },
     rep () {
-      let data = this.$store.getters.getRepresentativePage
-      this.rep_does_exist = !!data
-      // console.log('rep()', this.rep_does_exist, data)
-      return data
+      return this.$store.getters.getRepresentativePage
     },
     isFederal () {
       if (this.rep) {
@@ -120,16 +89,27 @@ export default {
 </script>
 <style lang="scss">
 .rep-page {
+  .rep-name {
+    text-align: center;
+
+    i.fa {
+      vertical-align: text-top;
+    }
+  }
+
   .name {
-    /*font-size: 18px;*/
     font-size: 22px;
     font-weight: bold;
   }
 
   .position {
-    /*font-size: 16px;*/
     font-size: 18px;
     font-style: italic;
+  }
+
+  .social-media a,
+  .websites a {
+    font-size: 32px;
   }
 
   img {
@@ -139,17 +119,8 @@ export default {
 
   a { color: #000; }
 
-  .social-media a,
-  .websites a {
-    font-size: 24px;
-  }
-
   .no-info {
     margin-top: 30px;
-  }
-
-  .v-clip {
-    margin-top: 15px;
   }
 }
 ul.social-media {
@@ -164,7 +135,101 @@ ul.social-media li {
   font-size: 18px;
 }
 
+.websites a:hover {
+  i.fa-external-link-square { color: #657EAC; }
+}
 .phones i {
   vertical-align: middle;
+}
+
+.rep-main {
+  text-align: center;
+}
+
+.rep-detail {
+  width: 80%;
+  margin: 0 auto;
+
+  .legislator-info,
+  .executive-info {
+    h3 {
+      margin: 0.67em 0;
+    }
+  }
+
+  .loading-info p {
+    font-size: 18px;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 0;
+  }
+
+  table {
+    font-size: 14px;
+    tr:nth-child(even) {
+      background: #eee;
+    }
+
+    th, td {
+      padding: 4px 8px ;
+    }
+  }
+
+  table.td-left-2 tr {
+    th:not(:nth-child(2)),
+    td:not(:nth-child(2)) {
+      text-align: center;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      text-align: left;
+    }
+  }
+
+  table.td-left-3 {
+    th:not(:nth-child(3)),
+    td:not(:nth-child(3)) {
+      text-align: center;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      text-align: left;
+    }
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .rep-page .rep-detail { width: 90%; }
+
+  table.td-sm-hide-2 {
+    th:nth-child(2),
+    td:nth-child(2) {
+      display: none;
+    }
+  }
+
+  table.td-sm-hide-4 {
+    th:nth-child(4),
+    td:nth-child(4) {
+      display: none;
+    }
+  }
+}
+
+@media print {
+  .rep-main img { display: none; }
+  .rep-main .address { margin: 10px 0; }
+  .rep-detail { width: 95%; }
+  .legislator-info table { page-break-after: always; }
+  .rep-detail table { 
+    border-collapse: collapse;
+
+    tr {
+      border: 1px solid black;
+    }
+  }
+  .rep-detail table a { text-decoration: none }
 }
 </style>
