@@ -1,9 +1,30 @@
 <template>
-  <div class="president-info">
+  <div class="executive-info">
     <div v-if="info">
+      <div class="recent-bills">
+        <h3>Signed into law <span class="heading-desc">(last 10 bills)</span></h3>
+        <table v-if="info && info.laws" class="td-left-3 td-sm-hide-4">
+          <tr>
+            <th>Date signed</th>
+            <th>Bill #</th>
+            <th>Description</th>
+            <th>Introduced By</th>
+          </tr>
+          <tr v-for="bill in info.laws">
+            <td>{{ bill.signed_date }}</td>
+            <td>
+              <span v-if="bill.urls"><a :href="bill.urls.congress" rel="noopener" target="_blank">{{ bill.id }}</a></span>
+              <span v-else>{{ bill.id }}</span>
+            </td>
+            <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
+            <td class="ws-pre">{{ bill.sponsor }}</td>
+          </tr>
+        </table>
+      </div>
+
       <div>
-        <h3>Executive Orders</h3>
-        <table v-if="info && info.orders" class="td-left-3">
+        <h3>Executive Orders <span class="heading-desc">(last 10 orders)</span></h3>
+        <table v-if="info && info.orders" class="td-left-3 td-sm-hide-2">
           <tr>
             <th>Date</th>
             <th>Number</th>
@@ -11,8 +32,8 @@
           </tr>
           <tr v-for="eo in info.orders">
             <td>{{ eo.signing_date }}</td>
-            <td>{{ eo.executive_order_number }}</td>
-            <td><a :href="eo.html_url">{{ eo.title }}</a></td>
+            <td><a :href="eo.html_url" target="_blank" rel="noopener">{{ eo.executive_order_number }}</a></td>
+            <td><a :href="eo.html_url" target="_blank" rel="noopener">{{ eo.title }}</a></td>
           </tr>
         </table>
       </div>
@@ -26,7 +47,7 @@
           </tr>
           <tr v-for="doc in info.proclamations">
             <td>{{ doc.publication_date }}</td>
-            <td><a :href="doc.html_url" target="_blank" rel="nofollow noreferrer">{{ doc.title }}</a></td>
+            <td><a :href="doc.html_url" target="_blank" rel="noopener">{{ doc.title }}</a></td>
           </tr>
         </table>
       </div>
@@ -40,7 +61,7 @@
           </tr>
           <tr v-for="doc in info.memoranda">
             <td>{{ doc.publication_date }}</td>
-            <td><a :href="doc.html_url" target="_blank" rel="nofollow noreferrer">{{ doc.title }}</a></td>
+            <td><a :href="doc.html_url" target="_blank" rel="noopener">{{ doc.title }}</a></td>
           </tr>
         </table>
       </div>
@@ -48,17 +69,17 @@
     </div>
     <div class="loading-info" v-else>
       <p>Loading additional information...</p>
-      <clip-loader color="#3C4E6F"></clip-loader>
+      <loader-default></loader-default>
     </div>
   </div>
 </template>
 <script>
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+import LoaderDefault from '../components/LoaderDefault.vue'
 
 export default {
   name: 'president-info',
   props: ['slug'],
-  components: { ClipLoader },
+  components: { LoaderDefault },
   data () {
     return {
       info: null,
@@ -66,17 +87,18 @@ export default {
     }
   },
   mounted () {
-    let self = this
-    this.$store.dispatch('fetchPresidentInfo', this.slug)
-    setTimeout(function () {
-      self.info = self.$store.getters.getRepresentativeInfo
-      self.loaded = true
-    }, 3000)
-    // TO-DO: temporary fix to resolve initial loading issue
+    let rep = this.$store.state.apiData.representatives[this.$store.state.route.params.rep]
+    if (rep && rep.info && rep.info.orders) {
+      this.info = rep.info
+      this.loaded = true
+    } else {
+      let self = this
+      this.$store.dispatch('fetchPresidentInfo', this.slug)
+      setTimeout(function () {
+        self.info = self.$store.getters.getRepresentativeInfo
+        self.loaded = true
+      }, 2500)
+    }
   }
 }
 </script>
-<style lang="scss">
-.president-info {
-}
-</style>
