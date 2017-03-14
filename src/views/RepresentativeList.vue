@@ -1,28 +1,20 @@
 <template>
-  <ul class="rep-list">
-    <representative-item v-for="rep in repsData" :rep="rep"></representative-item>
-    <clip-loader v-if="!repsData" :loading="loading" :color="loader.color" :size="loader.size"></clip-loader>
-  </ul>
+  <div class="container">
+    <ul class="rep-list">
+      <representative-item v-for="rep in repsData" :rep="rep"></representative-item>
+      <loader-default v-if="!repsData"></loader-default>
+    </ul>
+  </div>
 </template>
 
 <script>
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
+import LoaderDefault from '../components/LoaderDefault'
 import RepresentativeItem from '../components/RepresentativeItem'
 
 export default {
   name: 'representative-list',
   components: {
-    ClipLoader, RepresentativeItem
-  },
-  mounted: function () {
-    // TO-DO: return to /all if nothing loads
-  },
-  data: function () {
-    return {
-      loader: {
-        color: '#3C4E6F'
-      }
-    }
+    LoaderDefault, RepresentativeItem
   },
   computed: {
     repsData () {
