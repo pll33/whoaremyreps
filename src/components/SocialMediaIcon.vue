@@ -17,7 +17,7 @@ export default {
       },
       classes: {
         'GooglePlus': 'fa fa-google-plus-square',
-        'Facebook': 'fa fa-facebook-official',
+        'Facebook': 'fa fa-facebook-square',
         'Twitter': 'fa fa-twitter-square',
         'YouTube': 'fa fa-youtube-square',
         'Instagram': 'fa fa-instagram'
@@ -38,7 +38,7 @@ export default {
 <style lang="scss">
 .social-media a:hover {
   i.fa-google-plus-square { color: #DD4B39; }
-  i.fa-facebook-official { color: #3B5998; }
+  i.fa-facebook-square { color: #3B5998; }
   i.fa-twitter-square { color: #55ACEE; }
   i.fa-youtube-square { color: #BB0000; }
   i.fa-instagram { color: #8A3AB9; }
