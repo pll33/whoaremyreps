@@ -7,7 +7,6 @@
   </div>
 </template>
 
-
 <script>
 export default {
   created () {
@@ -66,7 +65,6 @@ export default {
     },
     _saveToLocalStorage: function (address, geolocation, abbreviation) {
       if (typeof window.localStorage !== 'undefined') {
-        console.log('saving to localStorage:', address, geolocation, abbreviation) // TO-DO: eventually remove
         let timestamp = new Date().getTime()
         let dataObj = { address, geolocation, abbreviation, timestamp }
         window.localStorage.setItem('__whoaremyreps__userData', JSON.stringify(dataObj))
@@ -80,13 +78,11 @@ export default {
       }
     },
     _locateSuccess: function (pos) {
-      // console.log(pos, pos.coords)
       this.locationData.position = (pos) ? pos.coords : null
+      this.locationInput.placeholder = 'Your address'
       this.locationInput.locateError = false
       this.locationInput.searchType = 'locate'
 
-      // send user position request to server, server calls google geocoding api and responds w/ address
-      // https://maps.googleapis.com/maps/api/geocode/json?latlng= &key=
       let latlng = pos.coords.latitude + ',' + pos.coords.longitude
       let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
 
@@ -109,12 +105,14 @@ export default {
               address: userAddress,
               abbreviation
             })
+
+            if (_store.state.route.path !== '/all') this.$router.push('/all')
           }
         } else {
           this.locationInput.value = pos.coords.latitude + ', ' + pos.coords.longitude
         }
-      }, (response) => {
-        console.log('GMAPS error:', response)
+      }, (error) => {
+        console.log('Google Maps API error:', error)
       })
     },
     submit: function () {
@@ -143,10 +141,12 @@ export default {
               address: userAddress,
               abbreviation
             })
+
+            if (_store.state.route.path !== '/all') this.$router.push('/all')
           }
         }
-      }, (response) => {
-        console.log('GMAPS error:', response)
+      }, (error) => {
+        console.log('Google Maps API error:', error)
       })
     },
     locate: function () {
@@ -172,13 +172,12 @@ $hover-border-color: #333;
 }
 
 .locate-inputs {
-  display: inline-block;
   margin-top: 5px;
 
   input,
   button {
     font-size: 1em;
-    border: 2px solid #DDD;
+    border: 1px solid #DDD;
     border-radius: 15px;
     transition: border-color 0.6s ease;
   }
