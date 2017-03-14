@@ -23,7 +23,9 @@
       <ul class="nav nav-simple">
         <li><router-link to="/about">About</router-link></li>
         <li v-if="!landingPage && allList"><router-link to="/composition">Legislative Composition</router-link></li>
+        <li v-if="!landingPage && allList"><router-link to="/maps">Maps</router-link></li>
         <li><router-link to="/privacy">Privacy Policy</router-link></li>
+        <li><router-link to="/terms">Terms of Service</router-link></li>
       </ul>
     </footer>
   </div>
@@ -102,6 +104,7 @@ export default {
 
 <style lang="scss">
 $base-font-size: 16px;
+$foot-font-size: 15px;
 $base-font-weight: 300;
 $bold-font-weight: 600;
 
@@ -184,12 +187,12 @@ ul.nav {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
   font-size: 0;
 }
 
 ul.navbar {
+  display: flex;
+  justify-content: center;
   background-color: lighten($color-light-navy, 8%);
 }
 
@@ -235,9 +238,18 @@ h1, h2 {
   color: black;
 }
 
+ul.nav-simple {
+  text-align: center;
+  padding: 0 10px;
+}
+
+ul.nav-simple li {
+  display: inline-block;
+}
+
 ul.nav-simple li a {
-  font-size: $base-font-size;
-  padding: 0 4px;
+  font-size: $foot-font-size;
+  padding: 0 5px;
 }
 
 .fade-enter-active {
