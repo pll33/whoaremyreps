@@ -1,11 +1,12 @@
 <template>
   <li><a v-bind:href="sm_href" v-bind:title="channel.type"><i v-bind:class="sm_class"></i></a></li>
 </template>
+
 <script>
 export default {
   name: 'social-media-icon',
   props: ['channel'],
-  data: function () {
+  data () {
     return {
       base_href: {
         'GooglePlus': 'https://plus.google.com/',
@@ -33,3 +34,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.social-media a:hover {
+  i.fa-google-plus-square { color: #DD4B39; }
+  i.fa-facebook-official { color: #3B5998; }
+  i.fa-twitter-square { color: #55ACEE; }
+  i.fa-youtube-square { color: #BB0000; }
+  i.fa-instagram { color: #8A3AB9; }
+}
+</style>
