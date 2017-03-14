@@ -2,7 +2,7 @@
   <div class="executive-info">
     <div v-if="info">
       <div class="recent-bills">
-        <h3>Signed into law <span class="heading-desc">(last 10 bills)</span></h3>
+        <h3>Bills signed into law <span class="heading-desc">(last 10 bills)</span></h3>
         <table v-if="info && info.laws" class="td-left-3 td-sm-hide-4">
           <tr>
             <th>Date signed</th>
