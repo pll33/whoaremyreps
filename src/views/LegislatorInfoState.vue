@@ -16,10 +16,10 @@
           <h3>Resources</h3>
           <ul class="resources">
             <li v-if="info.resources.ballotpedia_url">
-              <a :href="'https://ballotpedia.org/' + info.resources.ballotpedia_url" rel="noopener"><i class="fa fa-check-square-o"></i>Ballotpedia</a>
+              <a :href="'https://ballotpedia.org/' + info.resources.ballotpedia_url" title="Ballotpedia" target="_blank" rel="noopener"><i class="fa fa-check-square-o"></i>Ballotpedia</a>
             </li>
             <li v-if="info.resources.votesmart_id">
-              <a :href="'https://votesmart.org/candidate/' + info.resources.votesmart_id" target="_blank" rel="noopener"><i class="fa fa-th-list"></i>VoteSmart</a>
+              <a :href="'https://votesmart.org/candidate/' + info.resources.votesmart_id" title="VoteSmart" target="_blank" rel="noopener"><i class="fa fa-list"></i>VoteSmart</a>
             </li>
           </ul>
 

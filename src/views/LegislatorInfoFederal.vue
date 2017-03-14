@@ -9,19 +9,19 @@
           <a :href="info.resources.contact_form" target="_blank" rel="noopener"><i class="fa fa-comment-o"></i>Contact Form</a>
         </li>
         <li v-if="info.resources.govtrack_id">
-          <a :href="'https://www.govtrack.us/congress/members/' + info.resources.govtrack_id" target="_blank" rel="noopener"><i class="fa fa-university"></i>GovTrack.us</a>
+          <a :href="'https://www.govtrack.us/congress/members/' + info.resources.govtrack_id" title="GovTrack.us" target="_blank" rel="noopener"><i class="fa fa-university"></i>GovTrack.us</a>
         </li>
         <li v-if="info.resources.crp_id">
-          <a :href="'http://www.opensecrets.org/politicians/summary.php?cid=' + info.resources.crp_id" target="_blank" rel="noopener"><i class="fa fa-money"></i>OpenSecrets</a>
+          <a :href="'http://www.opensecrets.org/politicians/summary.php?cid=' + info.resources.crp_id" title="OpenSecrets" target="_blank" rel="noopener"><i class="fa fa-money"></i>OpenSecrets</a>
         </li>
         <li v-if="info.resources.ballotpedia_url">
-          <a :href="'https://ballotpedia.org/' + info.resources.ballotpedia_url" rel="noopener"><i class="fa fa-check-square-o"></i>Ballotpedia</a>
+          <a :href="'https://ballotpedia.org/' + info.resources.ballotpedia_url" title="Ballotpedia" rel="noopener"><i class="fa fa-check-square-o"></i>Ballotpedia</a>
         </li>
         <li v-if="info.resources.votesmart_id">
-          <a :href="'http://votesmart.org/candidate/' + info.resources.votesmart_id" target="_blank" rel="noopener"><i class="fa fa-th-list"></i>VoteSmart</a>
+          <a :href="'http://votesmart.org/candidate/' + info.resources.votesmart_id" title="VoteSmart" target="_blank" rel="noopener"><i class="fa fa-list"></i>VoteSmart</a>
         </li>
         <li v-if="info.resources.fax">
-          <span style="padding: 4px"><i class="fa fa-fax" title="Fax"></i>{{ info.resources.fax }} (Fax)</span>
+          <span><i class="fa fa-fax" title="Fax"></i>{{ info.resources.fax }} (Fax)</span>
         </li>
       </ul>
 
@@ -70,7 +70,7 @@
     </div>
     <div class="loading-info" v-else>
       <p>Loading additional information...</p>
-      <loader-default style="padding: 10px 0;"></loader-default>
+      <loader-default></loader-default>
     </div>
   </div>
 </template>
@@ -122,12 +122,13 @@ ul.resources li {
   display: inline-block;
 }
 
-ul.resources li a {
-  padding: 4px;
+ul.resources li a,
+ul.resources li span {
+  padding: 4px 8px;
+}
 
-  &:hover {
-    background-color: #EEE;
-  }
+ul.resources li a:hover {
+  background-color: #EEE;
 }
 
 ul.resources i {
@@ -152,8 +153,7 @@ ul.resources i {
 
 @media screen and (min-width: 681px) {
   ul.resources li {
-    margin: 4px 8px;
-    flex: auto;
+    margin: 4px;
   }
 }
 </style>

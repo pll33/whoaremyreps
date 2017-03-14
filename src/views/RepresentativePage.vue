@@ -26,7 +26,7 @@
               <social-media-icon v-for="channel in rep.channels" :channel="channel"></social-media-icon>
             </ul>
             <span class="websites" v-for="site in rep.urls">
-              <a v-bind:href="site" target="_blank" rel="noopener"><i class="fa fa-external-link-square"></i></a>
+              <a v-bind:href="site" title="Website" target="_blank" rel="noopener"><i class="fa fa-external-link-square"></i></a>
             </span>
           </div>
           <div class="phones" v-for="num in rep.phones">
