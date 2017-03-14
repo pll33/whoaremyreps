@@ -4,7 +4,7 @@
       <div class="header">
         <h1>Who Are My Representatives?</h1>
         <location-input></location-input>
-        <clip-loader v-once v-if="allList && landingPage" :loading="loading" :color="loader.color_white" :size="loader.size"></clip-loader>
+        <clip-loader v-once v-if="allList && landingPage" :color="loader.color_white"></clip-loader>
       </div>
       <ul class="nav navbar" v-if="!landingPage">
         <li v-if="allList"><router-link to="/all">All</router-link></li>
@@ -13,7 +13,7 @@
         <li v-if="localList"><router-link to="/local">Local</router-link></li>
       </ul>
     </header>
-    <main class="container">
+    <main class="content" v-if="!landingPage">
       <loader-redirect v-if="!landingPage && homePage" :color="loader.color_blue"></loader-redirect>
       <transition name="fade" mode="out-in">
         <router-view></router-view>
@@ -46,7 +46,7 @@ export default {
         landOnce: false
       },
       loader: {
-        color_blue: '#3C4E6F',
+        color_blue: '#455A80',
         color_white: '#ECF0F1'
       }
     }
@@ -102,21 +102,40 @@ export default {
 
 <style lang="scss">
 $base-font-size: 16px;
-$color-light-navy: #3C4E6F;
+$base-font-weight: 300;
+$bold-font-weight: 600;
+
+$color-light-navy: #455A80;
 $color-dark-navy: #2C3E50;
 $color-dark-blue: #2980B9;
 $color-blue: #3498DB;
 $color-red: #E74C3C;
 $color-off-white: #ECF0F1;
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   font-size: $base-font-size;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  font-weight: $base-font-weight;
   margin: 0;
-  /*background-color: #ECF0F1;*/
+}
+
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  padding: 25px 0;
+}
+
+.footer {
+  padding: 15px 0;
 }
 
 .start {
@@ -125,7 +144,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
+    text-align: center;
   }
 
   h1 { 
@@ -155,7 +174,9 @@ body {
 header {
   background-color: $color-light-navy;
   color: #FFF;
+  text-align: center;
 
+  .header { padding: 15px 0; }
   h1 { font-weight: 600; }
 }
 
@@ -173,12 +194,20 @@ ul.navbar {
 }
 
 ul.navbar li a {
-  width: 125px;
-  font-size: 24px;
   display: block;
   text-decoration: none;
   color: white;
-  padding: 10px 0;
+
+  @media screen and (max-width: 680px) {
+    font-size: 20px;
+    padding: 10px 25px;
+  }
+
+  @media screen and (min-width: 681px) {
+    width: 125px;
+    font-size: 24px;
+    padding: 10px 0;
+  }
 }
 
 ul.navbar li:hover {
@@ -193,25 +222,13 @@ ul.nav-simple .router-link-active {
   font-weight: bold;
 }
 
-main {
-  padding: 25px 0;
-}
 .container {
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
-}
-
-#app {
-  color: $color-dark-navy;
 }
 
 h1, h2 {
   margin: 0;
-}
-
-.header,
-.footer {
-  padding: 15px 0;
 }
 
 .footer a {
@@ -223,31 +240,79 @@ ul.nav-simple li a {
   padding: 0 4px;
 }
 
-.btn {
-  display: block;
-  margin: 0;
-  padding: 10px 15px;
-  outline: none;
-  border: 1px solid darken($color-off-white, 20%);
-  background: $color-off-white;
-  transition: background-color 0.2s ease;
-  font-size: 14px;
-  margin: 10px auto;
-
-  &:hover {
-    background: darken($color-off-white, 5%);
-  }
-
-  &:active {
-    background: darken($color-off-white, 20%);
-  }
-}
-
 .fade-enter-active {
   transition: all .2s ease;
 }
 
 .fade-enter, .fade-leave-active {
   opacity: 0;
+}
+
+.text-bold { font-weight: bold; }
+.text-italic { font-style: italic; }
+.text-center { text-align: center; }
+.ws-pre { white-space: pre; }
+.fw-500 { font-weight: 500; }
+.fw-600 { font-weight: 600; }
+.heading-desc {
+  font-size: 14px;
+  font-weight: normal;
+  font-style: italic;
+}
+
+@media screen and (max-width: 680px) {
+  .start {
+    header h1 {
+      font-size: 2.75em;
+    }
+  }
+
+  header {
+    h1 {
+      font-size: 1.6em;
+    }
+  }
+
+  .container {
+    max-width: 90%;
+  }
+}
+
+@media print {
+  header, ul.navbar {
+    background: none;
+    color: #000;
+  }
+
+  ul.navbar li a {
+    background: none;
+    color: #000;
+    width: 125px;
+    font-size: 24px;
+    padding: 10px 0;
+  }
+
+  ul.navbar .router-link-active {
+    font-weight: bold;
+    background: none;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .locate-inputs input {
+    outline: none;
+    border: 0;
+    border-radius: 0;
+    width: 60vw;
+    text-align: center;
+  }
+
+  .locate-inputs button,
+  .locate-inputs .search-icon,
+  footer {
+    display: none;
+  }
 }
 </style>
