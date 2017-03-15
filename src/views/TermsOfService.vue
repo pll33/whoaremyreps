@@ -4,6 +4,9 @@
 
     <p><span class="heading-desc">Last updated: {{ lastUpdatedDate }}</span></p>
 
+    <!-- TO-DO:
+        (terms of service page required by Google Maps API terms of service)
+    -->
   </div>
 </template>
 
