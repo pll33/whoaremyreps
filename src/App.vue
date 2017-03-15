@@ -23,9 +23,7 @@
       <ul class="nav nav-simple">
         <li><router-link to="/about">About</router-link></li>
         <li v-if="!landingPage && allList"><router-link to="/composition">Legislative Composition</router-link></li>
-        <li v-if="!landingPage && allList"><router-link to="/maps">Maps</router-link></li>
         <li><router-link to="/privacy">Privacy Policy</router-link></li>
-        <li><router-link to="/terms">Terms of Service</router-link></li>
       </ul>
     </footer>
   </div>
