@@ -1,15 +1,17 @@
 <template>
-  <div class="legislator-info">
+  <div class="legislator-info legislator-state">
     <div v-if="info">
       <div class="committees">
         <div v-if="info && info.resources">
           <div class="offices">
             <div class="office" v-for="office in info.resources.offices">
               <h4>{{ office.name }}</h4>
-              <span class="address" v-bind:class="checkForNewline(office.address)">{{ office.address }}</span>
-              <span v-if="office.phone"><br><i class="fa fa-phone"></i> {{ office.phone }} (Office)</span>
-              <span v-if="office.fax"><br><i class="fa fa-fax"></i> {{ office.fax }} (Fax)</span>
-              <span v-if="office.email"><br><i class="fa fa-envelope"></i> {{ office.email }}</span>
+              <div class="office-info" v-bind:class="{ inline: !checkForNewline(office.address) }">
+                <span class="address" v-bind:class="{ 'ws-pre': checkForNewline(office.address) }">{{ office.address }}</span>
+                <span v-if="office.phone"><br><i class="fa fa-phone"></i> {{ office.phone }} (Office)</span>
+                <span v-if="office.fax"><br><i class="fa fa-fax"></i> {{ office.fax }} (Fax)</span>
+                <span v-if="office.email"><br><i class="fa fa-envelope"></i> {{ office.email }}</span>
+              </div>
             </div>
           </div>
           
@@ -92,20 +94,22 @@ export default {
   },
   methods: {
     checkForNewline (address) {
-      if (address.indexOf('\n') >= 0 || address.indexOf('\r') >= 0) {
-        return 'ws-pre'
-      }
+      return (address.indexOf('\n') >= 0 || address.indexOf('\r') >= 0)
     }
   }
 }
 </script>
 <style lang="scss">
-.legislator-info {
+.legislator-state {
   .office {
     display: inline-block;
     vertical-align: top;
 
-    h4 { margin-bottom: 0; }
+    h4 {
+      font-weight: 600;
+      margin: 1.33em 0 0.33em;
+    }
+
     i.fa {
       width: 20px;
       text-align: center;
@@ -114,13 +118,31 @@ export default {
 }
 
 @media screen and (max-width: 680px) {
-  .legislator-info .office {
-    padding: 0;
+  .legislator-state {
+    .offices {
+      text-align: center;
+    }
+
+    .office {
+      padding: 0 20px;
+    }
+
+    .office-info {
+      text-align: left;
+    }
+
+    .office-info.inline {
+      display: inline;
+    }
+
+    ul.resources li {
+      text-align: center;
+    }
   }
 }
 
 @media screen and (min-width: 681px) {
-  .legislator-info .office {
+  .legislator-state .office {
     padding: 10px;
   }
 }

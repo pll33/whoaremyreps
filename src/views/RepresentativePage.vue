@@ -150,13 +150,6 @@ ul.social-media li {
   width: 80%;
   margin: 0 auto;
 
-  .legislator-info,
-  .executive-info {
-    h3 {
-      margin: 0.67em 0;
-    }
-  }
-
   .loading-info p {
     font-size: 18px;
     text-align: center;
@@ -203,6 +196,16 @@ ul.social-media li {
 @media screen and (max-width: 680px) {
   .rep-page .rep-detail { width: 90%; }
 
+  .executive-info {
+    padding-top: 20px;
+  }
+
+  .legislator-info h3,
+  .executive-info h3 {
+    margin: 1.25em 0 0;
+    text-align: center;
+  }
+
   table.td-sm-hide-2 {
     th:nth-child(2),
     td:nth-child(2) {
@@ -215,6 +218,13 @@ ul.social-media li {
     td:nth-child(4) {
       display: none;
     }
+  }
+}
+
+@media screen and (min-width: 681px) {
+  .legislator-info h3,
+  .executive-info h3 {
+    margin: 0.67em 0;
   }
 }
 
