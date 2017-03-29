@@ -80,7 +80,7 @@ export default {
       this.loaded = true
     } else {
       let self = this
-      this.$store.dispatch('fetchLegislatorInfoState', {
+      this.$store.dispatch('getLegislatorInfoState', {
         slug: this.slug,
         role: this.role,
         name: this.name,

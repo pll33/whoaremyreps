@@ -33,7 +33,7 @@
       </div>
 
       <div class="recent-votes">
-        <h3>Recent Votes <span class="heading-desc">(last 10 bills)</span></h3>
+        <h3>Recent Votes <span class="heading-desc">(last 10 votes)</span></h3>
         <table class="td-left-3" v-if="info && info.votes.length > 0">
          <tr>
           <th>Date</th>
@@ -44,7 +44,7 @@
          <tr v-for="vote in info.votes">
           <td>{{ vote.date }}</td>
           <td>{{ vote.position }}</td>
-          <td>{{ vote.title }}</td>
+          <td><span class="fw-600">{{ vote.title }}</span><span v-if="vote.description"> - {{ vote.description }}</span></td>
           <td>{{ vote.total }}</td>
          </tr>
         </table>
@@ -111,7 +111,7 @@ export default {
       this.info = rep.info
       this.loaded = true
     } else {
-      this.$store.dispatch('fetchLegislatorInfoFederal', {
+      this.$store.dispatch('getLegislatorInfoFederal', {
         slug: this.slug,
         role: this.role,
         name: this.name,

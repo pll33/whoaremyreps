@@ -98,7 +98,7 @@ export default {
       this.loaded = true
     } else {
       let self = this
-      this.$store.dispatch('fetchPresidentInfo', this.slug)
+      this.$store.dispatch('getPresidentInfo', { slug: this.slug })
       setTimeout(function () {
         self.info = self.$store.getters.getRepresentativeInfo
         self.loaded = true

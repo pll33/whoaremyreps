@@ -51,7 +51,7 @@ export default {
       this.loaded = true
     } else {
       let self = this
-      this.$store.dispatch('fetchGovernorInfo', this.slug)
+      this.$store.dispatch('getGovernorInfo', { slug: this.slug })
       setTimeout(function () {
         self.info = self.$store.getters.getRepresentativeInfo
         self.loaded = true
@@ -60,7 +60,7 @@ export default {
   },
   computed: {
     legiscan_url () {
-      let stateAbbrev = this.$store.getters.getUserStateAbbreviaton
+      let stateAbbrev = this.$store.getters.getStateAbbreviation
       return 'https://legiscan.com/' + stateAbbrev.toUpperCase() + '/legislation?status=passed'
     }
   }
