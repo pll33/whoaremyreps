@@ -1,6 +1,5 @@
 var merge = require('webpack-merge')
-var prodEnv = require("./prod.env.json")
 
-module.exports = module.exports = merge(prodEnv, {
+module.exports = {
   NODE_ENV: '"production"'
-})
+}
