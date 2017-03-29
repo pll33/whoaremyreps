@@ -33,7 +33,7 @@
       </div>
 
       <div class="recent-votes">
-        <h3>Recent Votes <span class="heading-desc">(last 10 votes)</span></h3>
+        <h3>Recent Votes <span class="heading-desc" v-if="info.votes && info.votes.length > 0">(last {{ info.votes.length }} votes)</span></h3>
         <table class="td-left-3" v-if="info && info.votes.length > 0">
          <tr>
           <th>Date</th>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="bills-sponsor">
-        <h3>Sponsored Bills <span class="heading-desc">(last 10 bills)</span></h3>
+        <h3>Sponsored Bills <span class="heading-desc" v-if="info.sponsored && info.sponsored.length > 0">(last {{ info.sponsored.length }} bills)</span></h3>
         <table class="td-left-3" v-if="info && info.sponsored.length > 0">
           <tr>
             <th>Date Introduced</th>
@@ -68,7 +68,7 @@
       </div>
 
       <div class="bills-cosponsor">
-        <h3>Co-Sponsored Bills <span class="heading-desc">(last 10 bills)</span></h3>
+        <h3>Co-Sponsored Bills <span class="heading-desc"  v-if="info.cosponsored && info.cosponsored.length > 0">(last {{ info.cosponsored.length }} bills)</span></h3>
         <table class="td-left-3 td-sm-hide-4" v-if="info && info.cosponsored.length > 0">
           <tr>
             <th>Date Introduced</th>

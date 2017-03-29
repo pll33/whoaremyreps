@@ -2,8 +2,8 @@
   <div class="executive-info">
     <div v-if="info">
       <div class="recent-bills">
-        <h3>Bills signed into law <span class="heading-desc">(last 10 bills)</span></h3>
-        <table class="td-left-3" v-if="info && info.laws">
+        <h3>Bills signed into law <span v-if="info.laws.length > 0" class="heading-desc">(last {{ info.laws.length }} bills)</span></h3>
+        <table class="td-left-3" v-if="info.laws && info.laws.length > 0">
           <tr>
             <th>Date signed</th>
             <th>Bill #</th>
@@ -17,12 +17,8 @@
             </td>
             <td>{{ bill.title }}</a></td>
           </tr>
-          <tr class="tr-more-info">
-            <td colspan="4">
-              Up-to-date information available at <a :href="legiscan_url" rel="noopener" target="_blank">LegiScan.com</a>
-            </td>
-          </tr>
         </table>
+        <p v-else>Up-to-date information available at <a :href="legiscan_url" rel="noopener" target="_blank">LegiScan.com</a></p>
       </div>
     </div>
     <div class="loading-info" v-else>

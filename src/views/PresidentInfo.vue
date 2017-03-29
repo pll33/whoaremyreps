@@ -2,7 +2,7 @@
   <div class="executive-info">
     <div v-if="info">
       <div class="recent-bills">
-        <h3>Bills signed into law <span class="heading-desc">(last 10 bills)</span></h3>
+        <h3>Bills signed into law <span class="heading-desc" v-if="info.laws && info.laws.length > 0">(last {{ info.laws.length }} bills)</span></h3>
         <table v-if="info && info.laws" class="td-left-3 td-sm-hide-4">
           <tr>
             <th>Date signed</th>
@@ -13,7 +13,7 @@
           <tr v-for="bill in info.laws">
             <td>{{ bill.signed_date }}</td>
             <td>
-              <span v-if="bill.urls"><a :href="bill.urls.congress" rel="noopener" target="_blank">{{ bill.id }}</a></span>
+              <span v-if="bill.url"><a :href="bill.url" rel="noopener" target="_blank">{{ bill.id }}</a></span>
               <span v-else>{{ bill.id }}</span>
             </td>
             <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
@@ -28,7 +28,7 @@
       </div>
 
       <div>
-        <h3>Executive Orders <span class="heading-desc">(last 10 orders)</span></h3>
+        <h3>Executive Orders <span class="heading-desc" v-if="info.orders && info.orders.length > 0">(last {{ info.orders.length }} orders)</span></h3>
         <table v-if="info && info.orders" class="td-left-3 td-sm-hide-2">
           <tr>
             <th>Date</th>
