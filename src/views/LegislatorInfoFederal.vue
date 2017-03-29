@@ -1,5 +1,5 @@
 <template>
-  <div class="legislator-info">
+  <div class="legislator-info legislator-federal">
     <div v-if="info">
       <h3 class="text-center" v-if="info.resources.term_end">Next election: {{ info.resources.term_end }}</h3>
 
@@ -30,6 +30,24 @@
         <ul v-if="info.committees">
           <li v-for="com in info.committees">{{ com.title }}, <span class="text-italic">{{ com.committee }}</span></li>
         </ul>
+      </div>
+
+      <div class="recent-votes">
+        <h3>Recent Votes <span class="heading-desc">(last 10 bills)</span></h3>
+        <table class="td-left-3" v-if="info && info.votes.length > 0">
+         <tr>
+          <th>Date</th>
+          <th>Position</th>
+          <th>Description</th>
+          <th>Vote Total</th>
+         </tr>
+         <tr v-for="vote in info.votes">
+          <td>{{ vote.date }}</td>
+          <td>{{ vote.position }}</td>
+          <td>{{ vote.title }}</td>
+          <td>{{ vote.total }}</td>
+         </tr>
+        </table>
       </div>
 
       <div class="bills-sponsor">
@@ -111,7 +129,6 @@ export default {
 </script>
 <style lang="scss">
 ul.resources {
-  margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -139,6 +156,10 @@ ul.resources i {
 
 @media screen and (max-width: 680px) {
   .legislator-info {
+    .committees ul {
+      font-size: 15px;
+    }
+
     .bills-sponsor table,
     .bills-cosponsor table {
       font-size: 12px;
