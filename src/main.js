@@ -6,7 +6,6 @@ import VueResource from 'vue-resource'
 
 import 'font-awesome-loader'
 import App from './App'
-// import Hello from './views/Hello'
 
 Vue.use(VueResource)
 
