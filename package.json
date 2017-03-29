@@ -2,7 +2,7 @@
   "name": "WhoAreMyReps",
   "version": "1.0.0",
   "description": "Information about your elected representatives.",
-  "author": "Peter Liu <me@peterliu.io>",
+  "author": "Peter Liu <hello@whoaremyreps.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

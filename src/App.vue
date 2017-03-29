@@ -194,12 +194,12 @@ ul.navbar li a {
   text-decoration: none;
   color: white;
 
-  @media screen and (max-width: 680px) {
+  @media screen and (max-width: 640px) {
     font-size: 20px;
     padding: 10px 25px;
   }
 
-  @media screen and (min-width: 681px) {
+  @media screen and (min-width: 641px) {
     width: 125px;
     font-size: 24px;
     padding: 8px 0;
@@ -211,7 +211,7 @@ ul.navbar li:hover {
 }
 
 ul.navbar .router-link-active {
-  background: lighten($color-light-navy, 20%);
+  background: lighten($color-light-navy, 25%);
 }
 
 ul.nav-simple .router-link-active {
@@ -219,7 +219,7 @@ ul.nav-simple .router-link-active {
 }
 
 .container {
-  max-width: 680px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -265,7 +265,7 @@ ul.nav-simple li a {
   font-style: italic;
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 640px) {
   .start {
     header h1 {
       font-size: 2.75em;

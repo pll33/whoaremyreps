@@ -65,7 +65,7 @@ $border-color: #CCC;
   }
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 640px) {
   .rep-item-info {
     display: inline-block;
   }

@@ -154,7 +154,7 @@ ul.resources i {
   text-align: center;
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 640px) {
   .legislator-info {
     .committees ul {
       font-size: 15px;
@@ -172,7 +172,7 @@ ul.resources i {
   }
 }
 
-@media screen and (min-width: 681px) {
+@media screen and (min-width: 641px) {
   ul.resources li {
     margin: 4px;
   }

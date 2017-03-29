@@ -117,7 +117,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 640px) {
   .legislator-state {
     .offices {
       text-align: center;
@@ -141,7 +141,7 @@ export default {
   }
 }
 
-@media screen and (min-width: 681px) {
+@media screen and (min-width: 641px) {
   .legislator-state .office {
     padding: 10px;
   }

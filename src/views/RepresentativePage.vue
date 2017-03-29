@@ -198,7 +198,7 @@ ul.social-media li {
   }
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 640px) {
   .rep-page .rep-detail { width: 90%; }
 
   .executive-info {
@@ -226,7 +226,7 @@ ul.social-media li {
   }
 }
 
-@media screen and (min-width: 681px) {
+@media screen and (min-width: 641px) {
   .legislator-info h3,
   .executive-info h3 {
     margin: 0.67em 0;
