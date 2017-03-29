@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <ul class="rep-list">
-      <representative-item v-for="rep in repsData" :rep="rep"></representative-item>
-      <loader-default v-if="!repsData"></loader-default>
+      <representative-item v-for="slug in levelList" :rep="getItem(slug)"></representative-item>
+      <loader-default v-if="!levelList"></loader-default>
     </ul>
   </div>
 </template>
@@ -16,8 +16,16 @@ export default {
   components: {
     LoaderDefault, RepresentativeItem
   },
+  methods: {
+    getItem (slug) {
+      let reps = this.$store.getters.getRepresentatives
+      let { name, party, position, hasInfo } = reps[slug]
+      return { slug, name, party, position, hasInfo }
+      // TO-DO: (babel) test destructuring support in IE browsers
+    }
+  },
   computed: {
-    repsData () {
+    levelList () {
       return this.$store.getters.getRepresentativesByLevel
     }
   }
