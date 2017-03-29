@@ -5,14 +5,10 @@ export default {
   getRepresentativePage (state) {
     return state.apiData.representatives[state.route.params.rep]
   },
-  getRepresentativeSocialMedia (state) {
-    if (state.route.params.rep) {
-      return state.apiData.representatives[state.route.params.rep].channels
-    }
-  },
   getRepresentativeInfo (state) {
     if (state.route.params.rep) {
-      return state.apiData.representatives[state.route.params.rep].info
+      let rep = state.apiData.representatives[state.route.params.rep]
+      return (rep.info) ? rep.info : null
     }
   },
   getRepresentativesByLevel (state) {
@@ -21,13 +17,7 @@ export default {
   getLegislativeComposition (state) {
     return state.apiData.composition
   },
-  getUserAddress (state) {
-    return state.locationData.position
-  },
-  getUserGeolocation (state) {
-    return state.locationData.address
-  },
-  getUserAbbreviation (state) {
+  getStateAbbreviation (state) {
     return state.locationData.abbreviation
   }
 }

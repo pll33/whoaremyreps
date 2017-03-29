@@ -9,7 +9,6 @@ Vue.use(Vuex)
 const state = {
   apiData: {
     representatives: {},
-    executives: {},
     levels: {
       all: [],
       federal: [], // federal level: president, vp, congress
@@ -40,9 +39,7 @@ const state = {
     }
   },
   locationData: {
-    abbreviation: '',
-    geo: '',
-    address: ''
+    abbreviation: ''
   }
 }
 
