@@ -21,22 +21,13 @@ export default {
   getLegislativeComposition (state) {
     return state.apiData.composition
   },
-  getPresidentParty (state) {
-    let execs = state.apiData.levels.executives
-    if (execs) {
-      return state.apiData.representatives[execs.president].party
-    }
-  },
-  getGovernorParty (state) {
-    let execs = state.apiData.levels.executives
-    if (execs) {
-      return state.apiData.representatives[execs.governor].party
-    }
-  },
   getUserAddress (state) {
     return state.locationData.position
   },
   getUserGeolocation (state) {
     return state.locationData.address
+  },
+  getUserAbbreviation (state) {
+    return state.locationData.abbreviation
   }
 }
