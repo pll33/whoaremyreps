@@ -12,10 +12,15 @@
           <tr v-for="bill in info.laws">
             <td>{{ bill.signed_date }}</td>
             <td>
-              <span v-if="bill.versions"><a :href="bill.versions.url" rel="noopener" target="_blank">{{ bill.bill_id }}</a></span>
+              <span v-if="bill.url"><a :href="bill.url" rel="noopener" target="_blank">{{ bill.bill_id }}</a></span>
               <span v-else>{{ bill.bill_id }}</span>
             </td>
             <td>{{ bill.title }}</a></td>
+          </tr>
+          <tr class="tr-more-info">
+            <td colspan="4">
+              Up-to-date information available at <a :href="legiscan_url" rel="noopener" target="_blank">LegiScan.com</a>
+            </td>
           </tr>
         </table>
       </div>
@@ -51,6 +56,12 @@ export default {
         self.info = self.$store.getters.getRepresentativeInfo
         self.loaded = true
       }, 2500)
+    }
+  },
+  computed: {
+    legiscan_url () {
+      let stateAbbrev = this.$store.getters.getUserStateAbbreviaton
+      return 'https://legiscan.com/' + stateAbbrev.toUpperCase() + '/legislation?status=passed'
     }
   }
 }
