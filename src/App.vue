@@ -107,11 +107,6 @@ $base-font-weight: 300;
 $bold-font-weight: 600;
 
 $color-light-navy: #455A80;
-$color-dark-navy: #2C3E50;
-$color-dark-blue: #2980B9;
-$color-blue: #3498DB;
-$color-red: #E74C3C;
-$color-off-white: #ECF0F1;
 
 html, body {
   height: 100%;
@@ -207,7 +202,7 @@ ul.navbar li a {
   @media screen and (min-width: 681px) {
     width: 125px;
     font-size: 24px;
-    padding: 10px 0;
+    padding: 8px 0;
   }
 }
 
