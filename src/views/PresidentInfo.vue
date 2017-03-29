@@ -19,6 +19,11 @@
             <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
             <td class="ws-pre">{{ bill.sponsor }}</td>
           </tr>
+          <tr class="tr-more-info">
+            <td colspan="4">
+              Up-to-date information available at <a href="https://www.congress.gov/search?q={%22source%22:%22legislation%22,%22congress%22:%22115%22,%22bill-status%22:%22law%22}">Congress.gov</a>
+            </td>
+          </tr>
         </table>
       </div>
 
