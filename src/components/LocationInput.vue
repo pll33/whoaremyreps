@@ -87,7 +87,6 @@ export default {
 
       this.$http.get('/api/reps?geo=' + encodedGeo)
         .then((response) => {
-          console.log('geo response: ', response)
           if (response && response.ok) {
             let location = response.body.location
             this.locationInput.value = location.address

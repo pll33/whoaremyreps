@@ -8,7 +8,7 @@ export default {
   getRepresentativeInfo (state) {
     if (state.route.params.rep) {
       let rep = state.apiData.representatives[state.route.params.rep]
-      return (rep.info) ? rep.info : null
+      return (rep && rep.info) ? rep.info : null
     }
   },
   getRepresentativesByLevel (state) {
