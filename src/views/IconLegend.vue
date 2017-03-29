@@ -9,7 +9,7 @@
       <li><party-affiliation-marker party="Green"></party-affiliation-marker>Green</li>
       <li><party-affiliation-marker party="Progressive"></party-affiliation-marker>Progressive</li>
       <li><party-affiliation-marker party="Socialist"></party-affiliation-marker>Socialist</li>
-      <li><party-affiliation-marker party="Unknown"></party-affiliation-marker>Unknown</li>
+      <li><party-affiliation-marker party="Unknown"></party-affiliation-marker>Unknown/Nonpartisan</li>
     </ul>
   </div>
 </template>
