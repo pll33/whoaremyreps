@@ -20,7 +20,11 @@ export default {
         searchType: 'search',
         value: ''
       },
-      locationData: {}
+      locationData: {
+        abbreviation: '',
+        address: '',
+        geo: ''
+      }
     }
   },
   computed: {
@@ -37,33 +41,28 @@ export default {
     }
   },
   methods: {
-    _getAbbreviation (addressComponents) {
-      let addrComponents = addressComponents.filter(item => item.types.indexOf('administrative_area_level_1') > -1)
-      return (addrComponents && addrComponents.length === 1) ? addrComponents[0].short_name : ''
-    },
     _retrieveLocalStorage: function () {
       // get saved address from local storage
-      let _store = this.$store
       if (typeof window.localStorage !== 'undefined') {
         let storedData = JSON.parse(window.localStorage.getItem('__whoaremyreps__userData'))
         if (storedData && storedData.address) {
           this.locationInput.value = storedData.address
           this.locationInput.searchType = 'stored'
 
-          _store.dispatch('setUserInfo', {
-            address: storedData.address,
-            location: storedData.geolocation,
-            abbreviation: storedData.abbreviation
-          })
-
-          _store.dispatch('fetchRepresentativesByAddress', {
-            address: storedData.address,
-            abbreviation: storedData.abbreviation
-          })
+          let encodedAddress = encodeURIComponent(storedData.address)
+          this.$http.get('/api/reps?address=' + encodedAddress)
+            .then((response) => {
+              if (response && response.ok) {
+                this.locationData = response.body.location
+                this.$store.dispatch('setData', response.body.data)
+              }
+            }, (error) => {
+              console.log('getRepresentatives error:', error)
+            })
         }
       }
     },
-    _saveToLocalStorage: function (address, geolocation, abbreviation) {
+    _saveToLocalStorage: function (address, abbreviation, geolocation) {
       if (typeof window.localStorage !== 'undefined') {
         let timestamp = new Date().getTime()
         let dataObj = { address, geolocation, abbreviation, timestamp }
@@ -84,70 +83,45 @@ export default {
       this.locationInput.searchType = 'locate'
 
       let latlng = pos.coords.latitude + ',' + pos.coords.longitude
-      let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latlng + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
+      let encodedGeo = encodeURIComponent(latlng)
 
-      let _store = this.$store
-      this.$http.get(apiCallUrl).then((response) => {
-        if (response && response.ok) {
-          if (response.body.results.length > 0) {
-            let results = response.body.results[0]
-            let userAddress = results['formatted_address']
-            let abbreviation = this._getAbbreviation(results.address_components)
+      this.$http.get('/api/reps?geo=' + encodedGeo)
+        .then((response) => {
+          console.log('geo response: ', response)
+          if (response && response.ok) {
+            let location = response.body.location
+            this.locationInput.value = location.address
+            this.locationData = location
+            this._saveToLocalStorage(location.address, location.abbreviation, location.geo)
+            this.$store.dispatch('setData', response.body.data)
 
-            this.locationInput.value = userAddress
-            this._saveToLocalStorage(userAddress, latlng, abbreviation)
-            _store.dispatch('setUserInfo', {
-              address: userAddress,
-              location: latlng,
-              abbreviation
-            })
-            _store.dispatch('fetchRepresentativesByAddress', {
-              address: userAddress,
-              abbreviation
-            })
-
-            if (_store.state.route.path !== '/all') this.$router.push('/all')
+            if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
-        } else {
-          this.locationInput.value = pos.coords.latitude + ', ' + pos.coords.longitude
-        }
-      }, (error) => {
-        console.log('Google Maps API error:', error)
-      })
+        }, (error) => {
+          console.log('getRepresentatives error:', error)
+        })
     },
     submit: function () {
       this.locationInput.locateError = false
       this.locationInput.searchType = 'search'
 
-      let inAddress = encodeURIComponent(this.locationInput.value)
-      let apiCallUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + inAddress + '&key=AIzaSyB-b-2YLj8k2M9sYXIamR6_ut5LdfwRgs4'
-      let _store = this.$store
-      this.$http.get(apiCallUrl).then((response) => {
-        if (response && response.ok) {
-          if (response.body.results.length > 0) {
-            let results = response.body.results[0]
-            let userAddress = results['formatted_address']
-            let latlng = results.geometry.location.lat + ',' + results.geometry.location.lng // not as accurate as brower geolocation
-            let abbreviation = this._getAbbreviation(results.address_components)
+      let address = this.locationInput.value
+      let encodedAddress = encodeURIComponent(address)
 
-            this.locationInput.value = userAddress
-            this._saveToLocalStorage(userAddress, latlng, abbreviation)
-            _store.dispatch('setUserInfo', {
-              address: userAddress,
-              geolocation: latlng,
-              abbreviation
-            })
-            _store.dispatch('fetchRepresentativesByAddress', {
-              address: userAddress,
-              abbreviation
-            })
+      this.$http.get('/api/reps?address=' + encodedAddress)
+        .then((response) => {
+          if (response && response.ok) {
+            let location = response.body.location
+            this.locationInput.value = location.address
+            this.locationData = location
+            this._saveToLocalStorage(location.address, location.abbreviation)
+            this.$store.dispatch('setData', response.body.data)
 
-            if (_store.state.route.path !== '/all') this.$router.push('/all')
+            if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
-        }
-      }, (error) => {
-        console.log('Google Maps API error:', error)
-      })
+        }, (error) => {
+          console.log('getRepresentatives error:', error)
+        })
     },
     locate: function () {
       navigator.geolocation.getCurrentPosition(this._locateSuccess, this._locateError)
