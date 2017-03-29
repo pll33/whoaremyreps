@@ -189,6 +189,7 @@ $hover-border-color: #333;
 }
 
 .locate-inputs input {
+  min-width: 20vw;
   height: 30px;
   box-sizing: border-box;
   vertical-align: bottom;

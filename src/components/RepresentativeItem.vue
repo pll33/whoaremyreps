@@ -5,7 +5,7 @@
       <span class="rep-item-name">{{ rep.name }}</span>
       <span class="rep-item-position">{{ rep.position }}</span>
     </span>
-    <span class="rep-item-detail-icon" v-if="rep.extraInfo" title="Additional information available"><i class="fa fa-info-circle"></i></span>
+    <span class="rep-item-detail-icon" v-if="!!rep.hasInfo" title="Additional information available"><i class="fa fa-info-circle"></i></span>
   </router-link>
 </template>
 
