@@ -1,13 +1,10 @@
 <template>
-  <i class="fa fa-square" v-bind:class="iconClass" v-bind:title="party"><span v-if="display_bool">{{ party }}</span></i>
+  <i class="fa fa-square party-icon" v-bind:class="iconClass" v-bind:title="party"><span class="tooltip">{{ party }}</span></i>
 </template>
 
 <script>
-// TO-DO: css-only rectangle (with padding for display_bool)
-
-// TO-DO create a toggle based on display_bool to display marker with party name inside (no icon), or marker w/o title (icon)
 export default {
-  props: ['party', 'display_bool'],
+  props: ['party'],
   computed: {
     iconClass () {
       if (!this.party) return 'party-unknown'
@@ -27,10 +24,13 @@ export default {
           return 'party-green'
         case 'socialist':
           return 'party-socialist'
+        case 'progressive':
         case 'progressive/democratic':
           return 'party-vpp'
+        case 'common sense independent':
         case 'independent':
           return 'party-independent'
+        case 'nonpartisan':
         case 'unknown':
         default:
           return 'party-unknown'
@@ -39,15 +39,48 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
+<style>
 .party-democratic { color: #3498DB; }
 .party-republican { color: #E74C3C; }
-.party-libertarian { color: #ffd700; /* color: gold; */ }
-.party-green { color: #98db34; /* green */ }
-.party-socialist { color: #972e1a; /* dark red */ }
-.party-vpp { color: #ffa7b6; /* pink */ } /* Vermont Progressive Party */
-.party-independent { color: darken(#ECF0F1,10%); }
-.party-unknown { color: #2c3e50; }
-.party-vacant { color: #EEE; }
+.party-libertarian { color: #FFD700; /* color: gold; */ }
+.party-green { color: #8CD125; /* green */ }
+.party-socialist { color: #AD351E; /* dark red */ }
+.party-vpp { color: #FFA7B6; /* pink */ } /* Vermont Progressive Party */
+.party-independent { color: #CFD9DB; }
+.party-unknown { color: #2C3E50; }
+.party-vacant { color: #EEEEEE; }
+
+.party-icon {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  display: none;
+  z-index: 2;
+  opacity: 0;
+  font-family: 'Avenir';
+  color: #000;
+  user-select: none;
+  cursor: default;
+}
+
+.rep-item .tooltip {
+  right: 160%;
+  padding: 0 8px;
+  line-height: 35px;
+  margin-top: -9px;
+}
+
+.rep-page .tooltip {
+  right: 175%;
+}
+
+@media screen and (min-width: 681px) {
+  .rep-item i:hover .tooltip,
+  .rep-page i:hover .tooltip {
+    opacity: 1;
+    display: inline;
+  }
+}
 </style>
