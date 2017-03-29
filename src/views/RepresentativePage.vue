@@ -33,7 +33,7 @@
             <span><i class="fa fa-phone"></i> {{ num }}</span>
           </div>
         </div>
-        <div class="rep-detail" v-if="rep.extraInfo">
+        <div class="rep-detail" v-if="rep.hasInfo">
           <keep-alive>
             <president-info v-if="isHeadOfGov && isFederal" :slug="rep.slug"></president-info>
             <governor-info v-else-if="isHeadOfGov && !isFederal" :slug="rep.slug"></governor-info>
@@ -166,6 +166,11 @@ ul.social-media li {
     th, td {
       padding: 4px 8px ;
     }
+  }
+
+  .tr-more-info {
+    background-color: #f9f9f9;
+    font-style: italic;
   }
 
   table.td-left-2 tr {
