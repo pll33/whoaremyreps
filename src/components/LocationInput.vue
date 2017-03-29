@@ -62,10 +62,10 @@ export default {
         }
       }
     },
-    _saveToLocalStorage: function (address, abbreviation, geolocation) {
+    _saveToLocalStorage: function (address) {
       if (typeof window.localStorage !== 'undefined') {
         let timestamp = new Date().getTime()
-        let dataObj = { address, geolocation, abbreviation, timestamp }
+        let dataObj = { address, timestamp }
         window.localStorage.setItem('__whoaremyreps__userData', JSON.stringify(dataObj))
       }
     },
@@ -92,7 +92,7 @@ export default {
             let location = response.body.location
             this.locationInput.value = location.address
             this.locationData = location
-            this._saveToLocalStorage(location.address, location.abbreviation, location.geo)
+            this._saveToLocalStorage(location.address)
             this.$store.dispatch('setData', response.body.data)
 
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
@@ -114,7 +114,7 @@ export default {
             let location = response.body.location
             this.locationInput.value = location.address
             this.locationData = location
-            this._saveToLocalStorage(location.address, location.abbreviation)
+            this._saveToLocalStorage(location.address)
             this.$store.dispatch('setData', response.body.data)
 
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
