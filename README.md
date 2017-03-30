@@ -1,4 +1,4 @@
-# whoaremyreps
+# WhoAreMyReps
 
 > A Vue.js project
 
