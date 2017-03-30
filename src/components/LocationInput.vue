@@ -57,7 +57,7 @@ export default {
                 this.$store.dispatch('setData', response.body.data)
               }
             }, (error) => {
-              console.log('getRepresentatives error:', error)
+              console.log('Location submit error:', error)
             })
         }
       }
@@ -73,17 +73,17 @@ export default {
       if (err) {
         this.locationInput.locateError = true
         this.locationInput.placeholder = 'Your address'
-        console.log('Geolocation error: ' + err)
+        console.log('Geolocation error: ', err)
       }
     },
-    _locateSuccess: function (pos) {
-      this.locationData.position = (pos) ? pos.coords : null
-      this.locationInput.placeholder = 'Your address'
+    _locateSuccess: function (position) {
       this.locationInput.locateError = false
+      this.locationInput.placeholder = 'Your address'
       this.locationInput.searchType = 'locate'
 
-      let latlng = pos.coords.latitude + ',' + pos.coords.longitude
+      let latlng = position.coords.latitude + ',' + position.coords.longitude
       let encodedGeo = encodeURIComponent(latlng)
+      this.locationData.geo = latlng
 
       this.$http.get('/api/reps?geo=' + encodedGeo)
         .then((response) => {
@@ -97,11 +97,12 @@ export default {
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
         }, (error) => {
-          console.log('getRepresentatives error:', error)
+          console.log('Location submit error:', error)
         })
     },
     submit: function () {
       this.locationInput.locateError = false
+      this.locationInput.placeholder = 'Your address'
       this.locationInput.searchType = 'search'
 
       let address = this.locationInput.value
@@ -119,14 +120,18 @@ export default {
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
         }, (error) => {
-          console.log('getRepresentatives error:', error)
+          let message = error.body.error.message
+          this.locationInput.locateError = true
+          this.locationInput.placeholder = 'Error: ' + message
+          this.locationInput.value = ''
+          console.log('Location submit error: ', error)
         })
     },
     locate: function () {
       navigator.geolocation.getCurrentPosition(this._locateSuccess, this._locateError)
       this.locationInput.locateError = false
-      this.locationInput.searchType = 'locate'
       this.locationInput.placeholder = 'Loading address...'
+      this.locationInput.searchType = 'locate'
       this.locationInput.value = ''
     }
   }
@@ -136,6 +141,7 @@ export default {
 <style lang="scss">
 $input-outline-color: #FFF;
 $hover-border-color: #333;
+$error-border-color: #ef8b80;
 
 .start {
   .locate-inputs {
@@ -180,20 +186,13 @@ $hover-border-color: #333;
   color: black;
 
   &.fa {
-    line-height: 30px;
-    padding-left: 16px;
+    padding-left: 12px;
   }
 
-  &.fa-search {
-    margin-right: -30px;
-  }
-
-  &.fa-location-arrow {
-    margin-right: -28px;
-  }
-
+  &.fa-search,
+  &.fa-location-arrow,
   &.fa-thumb-tack {
-    margin-right: -28px;
+    margin-right: -31px;
   }
 }
 
