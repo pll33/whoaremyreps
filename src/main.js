@@ -4,7 +4,6 @@ import router from './router'
 import { sync } from 'vuex-router-sync'
 import VueResource from 'vue-resource'
 
-import 'font-awesome-loader'
 import App from './App'
 
 Vue.use(VueResource)

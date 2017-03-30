@@ -10,8 +10,6 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "font-awesome": "^4.7.0",
-    "font-awesome-loader": "^1.0.1",
     "node-sass": "^3.13.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",

@@ -21,7 +21,7 @@ export default {
   components: { PartyAffiliationMarker }
 }
 </script>
-<style>
+<style lang="scss">
 ul.legend {
   margin: 0;
   padding: 0;
@@ -32,6 +32,10 @@ ul.legend li {
 }
 
 ul.legend li i {
-  width: 20px;
+  margin-right: 4px;
+
+  &:before {
+    vertical-align: bottom;
+  }
 }
 </style>

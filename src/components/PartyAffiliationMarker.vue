@@ -67,9 +67,10 @@ export default {
 
 .rep-item .tooltip {
   right: 160%;
-  padding: 0 8px;
-  line-height: 35px;
-  margin-top: -9px;
+  padding: 0 8px 0 4px;
+  line-height: 34px;
+  margin-top: -5px;
+  font-style: normal;
 }
 
 .rep-page .tooltip {

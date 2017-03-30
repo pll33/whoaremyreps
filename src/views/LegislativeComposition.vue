@@ -18,17 +18,13 @@
                 <party-affiliation-marker :party="composition.federal.head"></party-affiliation-marker>
               </td>
               <td>
-                <div>
-                  <span v-for="(value, key) in composition.federal.senate.parties">
-                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
-                  </span>
+                <div v-for="(value, key) in composition.federal.senate.parties">
+                  <party-affiliation-marker :party="key"></party-affiliation-marker><span>{{ value }}</span>
                 </div>
               </td>
               <td>
-                <div>
-                  <span v-for="(value, key) in composition.federal.house.parties">
-                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
-                  </span>
+                <div v-for="(value, key) in composition.federal.house.parties">
+                  <party-affiliation-marker :party="key"></party-affiliation-marker><span>{{ value }}</span>
                 </div>
               </td>
             </tr>
@@ -51,17 +47,13 @@
                 <party-affiliation-marker :party="composition.state.head"></party-affiliation-marker>
               </td>
               <td>
-                <div>
-                  <span v-for="(value, key) in composition.state.upper.parties">
-                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
-                  </span>
+                <div v-for="(value, key) in composition.state.upper.parties">
+                  <party-affiliation-marker :party="key"></party-affiliation-marker><span>{{ value }}</span>
                 </div>
               </td>
               <td v-if="composition.state.lower.count > 0">
-                <div>
-                  <span v-for="(value, key) in composition.state.lower.parties">
-                    <party-affiliation-marker :party="key"></party-affiliation-marker> {{ value }}<br>
-                  </span>
+                <div v-for="(value, key) in composition.state.lower.parties">
+                  <party-affiliation-marker :party="key"></party-affiliation-marker><span>{{ value }}</span>
                 </div>
               </td>
             </tr>
@@ -116,8 +108,12 @@ export default {
     }
 
     i {
+      font-size: 28px;
+      margin-right: 4px;
+    }
+
+    i:before {
       vertical-align: middle;
-      font-size: 32px;
     }
   }
 }

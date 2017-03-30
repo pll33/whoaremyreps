@@ -137,21 +137,29 @@ ul.resources {
 ul.resources li {
   list-style-type: none;
   display: inline-block;
-}
 
-ul.resources li a,
-ul.resources li span {
-  padding: 4px 8px;
-}
+  a {
+    text-decoration: none;
+    padding: 4px 8px;
 
-ul.resources li a:hover {
-  background-color: #EEE;
+    &:hover {
+      background-color: #EEE;
+    }
+  }
+
+  span {
+    padding: 4px 8px;
+  }
 }
 
 ul.resources i {
   width: 20px;
   margin-right: 6px;
   text-align: center;
+
+  &:before {
+    vertical-align: top;
+  }
 }
 
 @media screen and (max-width: 640px) {
@@ -160,6 +168,7 @@ ul.resources i {
       font-size: 15px;
     }
 
+    .recent-votes table,
     .bills-sponsor table,
     .bills-cosponsor table {
       font-size: 12px;

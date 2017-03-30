@@ -110,6 +110,7 @@ export default {
   .social-media a,
   .websites a {
     font-size: 32px;
+    text-decoration: none;
   }
 
   img {
@@ -131,8 +132,12 @@ ul.social-media {
 }
 ul.social-media li {
   display: inline-block;
-  margin: 0 4px;
+  margin: 0 2px;
   font-size: 18px;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .websites a:hover {

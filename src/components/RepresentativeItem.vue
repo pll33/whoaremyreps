@@ -60,10 +60,11 @@ $border-color: #CCC;
 .rep-item-detail-icon {
   margin-left: auto;
 
-  .fa {
+  .fa-info-circle {
     color: #444;
   }
 }
+
 
 @media screen and (max-width: 640px) {
   .rep-item-info {
