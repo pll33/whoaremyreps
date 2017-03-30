@@ -53,17 +53,19 @@ export default {
   },
   computed: {
     landingPage () {
-      // TO-DO: rewrite to make use of navigation guards
+      // show landing page only once
       if (!this.landing.landOnce) {
         let reps = this.allList
         let home = store.state.route.path === '/'
+
         if (!reps) {
+          // if no reps and infoPage, hide landing
           if (this.infoPage) return false
-          return true
+          else return true
         } else if (reps && home) {
           this.landing.landOnce = true
           setTimeout(() => {
-            if (store.state.route.path === '/') this.$router.push('/all')
+            if (this.homePage) this.$router.push('/all')
           }, 2500)
           return true
         } else {
@@ -71,7 +73,7 @@ export default {
           this.landing.landOnce = true
           this.$router.replace('/')
           setTimeout(() => {
-            if (store.state.route.path === '/') this.$router.replace(originalPath)
+            if (this.homePage) this.$router.replace(originalPath)
           }, 2500)
           return true
         }
@@ -82,7 +84,7 @@ export default {
     },
     infoPage () {
       let path = store.state.route.path
-      return path === '/about' || path === '/privacy' || path === '/resources'
+      return path === '/about' || path === '/privacy'
     },
     allList () {
       return store.state.apiData.levels.all.length > 0
@@ -148,12 +150,16 @@ body {
     font-size: 3em;
   }
 
+  ul.navbar,
   main.container {
     display: none;
   }
 
   .v-spinner {
-    margin-top: 25px;
+    position: absolute;
+    margin: 25px auto 0 auto;
+    left: 0;
+    right: 0;
   }
 
   .footer {
