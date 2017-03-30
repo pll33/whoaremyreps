@@ -205,7 +205,6 @@ $error-border-color: #ef8b80;
   cursor: pointer;
 
   i.fa-search {
-    vertical-align: top;
     font-size: 15px;
   }
 

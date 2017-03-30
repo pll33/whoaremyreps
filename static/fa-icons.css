@@ -98,6 +98,7 @@ i, cite, em, var, address, dfn {
 }
 .fa-phone:before {
   content: "\74";
+  vertical-align: bottom;
 }
 .fa-envelope:before {
   content: "\76";
@@ -110,6 +111,7 @@ i, cite, em, var, address, dfn {
 }
 .fa-fax:before {
   content: "\41";
+  vertical-align: bottom;
 }
 .fa-print:before {
   content: "\46";

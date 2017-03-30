@@ -91,10 +91,6 @@ export default {
 .rep-page {
   .rep-name {
     text-align: center;
-
-    i.fa {
-      vertical-align: text-top;
-    }
   }
 
   .name {
@@ -142,9 +138,6 @@ ul.social-media li {
 
 .websites a:hover {
   i.fa-external-link-square { color: #657EAC; }
-}
-.phones i {
-  vertical-align: middle;
 }
 
 .rep-main {
