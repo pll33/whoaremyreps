@@ -21,7 +21,6 @@ export default {
       let reps = this.$store.getters.getRepresentatives
       let { name, party, position, hasInfo } = reps[slug]
       return { slug, name, party, position, hasInfo }
-      // TO-DO: (babel) test destructuring support in IE browsers
     }
   },
   computed: {

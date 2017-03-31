@@ -45,7 +45,7 @@
           <td>{{ vote.date }}</td>
           <td>{{ vote.position }}</td>
           <td><span class="fw-600">{{ vote.title }}</span><span v-if="vote.description"> - {{ vote.description }}</span></td>
-          <td>{{ vote.total }}</td>
+          <td style="width: 50px">{{ vote.total }}</td>
          </tr>
         </table>
       </div>

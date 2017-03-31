@@ -108,7 +108,7 @@ export default {
     }
 
     i {
-      font-size: 28px;
+      font-size: 24px;
       margin-right: 4px;
     }
 
