@@ -131,3 +131,10 @@ i, cite, em, var, address, dfn {
 .fa-comment-o:before {
   content: "\42";
 }
+.fa-exclamation-circle:before {
+  content: "\43";
+}
+.fa-exclamation-triangle:before {
+  content: "\44";
+  vertical-align: text-top;
+}
