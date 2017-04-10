@@ -1,7 +1,7 @@
 <template>
   <div class="legislator-info legislator-state">
     <div v-if="info">
-      <div class="committees">
+      <div class="info-section">
         <div v-if="info && info.resources">
           <div class="offices">
             <div class="office" v-for="office in info.resources.offices">
@@ -26,15 +26,18 @@
           </ul>
 
           <h3>Committee Positions</h3>
-          <ul v-if="info.resources.roles.length > 0">
+          <ul class="committees" v-if="info.resources.roles && info.resources.roles.length > 0">
             <li v-for="role in info.resources.roles">{{ role }}</li>
           </ul>
           <p v-else>No committee positions.</p>
         </div>
+        <div v-else-if="info.errors && info.errors.resources">
+          <error-message message="There was an issue loading committee positions."></error-message>
+        </div>
       </div>
-      <div class="recent-bills">
+      <div class="info-section">
         <h3>Sponsored Bills <span class="heading-desc">(last 10 bills)</span></h3>
-        <table class="td-left-3 td-sm-hide-4" v-if="info && info.sponsored.length > 0">
+        <table class="td-left-3 td-sm-hide-4" v-if="info.sponsored && info.sponsored.length > 0">
           <tr>
             <th>Date Updated</th>
             <th>Bill #</th>
@@ -44,29 +47,35 @@
           <tr v-for="bill in info.sponsored">
             <td>{{ bill.updated_at }}</td>
             <td>
-              <span v-if="bill.versions"><a :href="bill.versions.url" target="_blank" >{{ bill.bill_id }}</a></span>
+              <span v-if="bill.url"><a :href="bill.url" target="_blank" >{{ bill.bill_id }}</a></span>
               <span v-else>{{ bill.bill_id }}</span>
             </td>
             <td>{{ bill.title }}</td>
             <td>{{ bill.created_at }}</td>
           </tr>
         </table>
+        <error-message v-else-if="info.errors && info.errors.sponsored" message="There was an issue loading sponsored bills."></error-message>
         <p v-else>No recently sponsored bills.</p>
       </div>
+
+      <div class="info-error" v-if="info.error && info.error.message">
+        <error-message :message="info.error.message"></error-message>
+      </div>
     </div>
-    <div class="loading-info" v-else>
+    <div class="info-loading" v-else>
       <p>Loading additional information...</p>
       <loader-default></loader-default>
     </div>
   </div>
 </template>
 <script>
-import LoaderDefault from '../components/LoaderDefault.vue'
+import ErrorMessage from '../components/ErrorMessage'
+import LoaderDefault from '../components/LoaderDefault'
 
 export default {
   name: 'legislator-info-state',
   props: ['slug', 'role', 'name', 'party'],
-  components: { LoaderDefault },
+  components: { ErrorMessage, LoaderDefault },
   data () {
     return {
       info: null,
@@ -79,17 +88,16 @@ export default {
       this.info = rep.info
       this.loaded = true
     } else {
-      let self = this
       this.$store.dispatch('getLegislatorInfoState', {
         slug: this.slug,
         role: this.role,
         name: this.name,
         party: this.party
       })
-      setTimeout(function () {
-        self.info = self.$store.getters.getRepresentativeInfo
-        self.loaded = true
-      }, 2500)
+      .then(() => {
+        this.info = this.$store.getters.getRepresentativeInfo
+        this.loaded = true
+      })
     }
   },
   methods: {
@@ -129,6 +137,7 @@ export default {
 
     .office-info {
       text-align: left;
+      font-size: 15px;
     }
 
     .office-info.inline {

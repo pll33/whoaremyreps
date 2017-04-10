@@ -1,7 +1,7 @@
 <template>
   <div class="executive-info">
     <div v-if="info">
-      <div class="recent-bills">
+      <div class="info-section">
         <h3>Bills signed into law <span class="heading-desc" v-if="info.laws && info.laws.length > 0">(last {{ info.laws.length }} bills)</span></h3>
         <table v-if="info && info.laws" class="td-left-3 td-sm-hide-4">
           <tr>
@@ -21,13 +21,13 @@
           </tr>
           <tr class="tr-more-info">
             <td colspan="4">
-              Up-to-date information available at <a href="https://www.congress.gov/search?q={%22source%22:%22legislation%22,%22congress%22:%22115%22,%22bill-status%22:%22law%22}">Congress.gov</a>
+              Up-to-date information available on <a href="https://www.congress.gov/search?q={%22source%22:%22legislation%22,%22congress%22:%22115%22,%22bill-status%22:%22law%22}">Congress.gov</a>
             </td>
           </tr>
         </table>
       </div>
 
-      <div>
+      <div class="info-section">
         <h3>Executive Orders <span class="heading-desc" v-if="info.orders && info.orders.length > 0">(last {{ info.orders.length }} orders)</span></h3>
         <table v-if="info && info.orders" class="td-left-3 td-sm-hide-2">
           <tr>
@@ -43,7 +43,7 @@
         </table>
       </div>
 
-      <div v-if="info && info.proclamations">
+      <div class="info-section" v-if="info && info.proclamations">
         <h3>Proclamations</h3>
         <table class="td-left-2">
           <tr>
@@ -57,7 +57,7 @@
         </table>
       </div>
 
-      <div v-if="info && info.memoranda">
+      <div class="info-section" v-if="info && info.memoranda">
         <h3>Presidential Memoranda</h3>
         <table class="td-left-2">
           <tr>
@@ -71,20 +71,26 @@
         </table>
       </div>
 
+      <div class="info-error" v-if="info.error && info.error.message">
+        <error-message :message="info.error.message"></error-message>
+      </div>
+
     </div>
-    <div class="loading-info" v-else>
+
+    <div class="info-loading" v-else>
       <p>Loading additional information...</p>
       <loader-default></loader-default>
     </div>
   </div>
 </template>
 <script>
-import LoaderDefault from '../components/LoaderDefault.vue'
+import ErrorMessage from '../components/ErrorMessage'
+import LoaderDefault from '../components/LoaderDefault'
 
 export default {
   name: 'president-info',
   props: ['slug'],
-  components: { LoaderDefault },
+  components: { ErrorMessage, LoaderDefault },
   data () {
     return {
       info: null,
@@ -97,12 +103,11 @@ export default {
       this.info = rep.info
       this.loaded = true
     } else {
-      let self = this
       this.$store.dispatch('getPresidentInfo', { slug: this.slug })
-      setTimeout(function () {
-        self.info = self.$store.getters.getRepresentativeInfo
-        self.loaded = true
-      }, 2500)
+        .then(() => {
+          this.info = this.$store.getters.getRepresentativeInfo
+          this.loaded = true
+        })
     }
   }
 }
