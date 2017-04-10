@@ -12,7 +12,7 @@ export default {
         'GooglePlus': 'https://plus.google.com/',
         'Facebook': 'https://facebook.com/',
         'Twitter': 'https://twitter.com/',
-        'YouTube': 'https://youtube.com/user/',
+        'YouTube': 'https://youtube.com/',
         'Instagram': 'https://instagram.com/'
       },
       classes: {
@@ -26,7 +26,11 @@ export default {
   },
   computed: {
     sm_href () {
-      return this.base_href[this.channel.type] + this.channel.id
+      let id = this.channel.id
+      if (this.channel.type === 'YouTube') {
+        if (id.length === 24 && id.substring(0, 2) === 'UC') return 'https://youtube.com/channel/' + id
+      }
+      return this.base_href[this.channel.type] + id
     },
     sm_class () {
       return this.classes[this.channel.type]
