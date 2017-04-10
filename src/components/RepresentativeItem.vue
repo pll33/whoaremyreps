@@ -20,12 +20,10 @@ export default {
 </script>
 
 <style lang="scss">
-$border-color: #CCC;
-
 .rep-item {
   display: flex;
   padding: 4px 8px;
-  border-bottom: 1px solid $border-color;
+  border-bottom: 1px solid #CCC;
   cursor: pointer;
   text-align: left;
 
@@ -64,7 +62,6 @@ $border-color: #CCC;
     color: #444;
   }
 }
-
 
 @media screen and (max-width: 640px) {
   .rep-item-info {

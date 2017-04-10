@@ -31,6 +31,7 @@
           </tbody>
         </table>
       </div>
+
       <div class="state" v-if="composition.state">
         <h3>{{ composition.state.name }}</h3>
         <table>

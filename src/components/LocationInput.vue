@@ -168,7 +168,7 @@ $error-border-color: #ef8b80;
 }
 
 .locate-inputs input {
-  min-width: 20vw;
+  min-width: 25vw;
   height: 30px;
   box-sizing: border-box;
   vertical-align: bottom;
@@ -186,7 +186,7 @@ $error-border-color: #ef8b80;
   color: black;
 
   &.fa {
-    padding-left: 12px;
+    padding-left: 14px;
   }
 
   &.fa-search,
