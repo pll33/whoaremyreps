@@ -13,8 +13,7 @@ const state = {
       all: [],
       federal: [], // federal level: president, vp, congress
       state: [], // state level: governor, state reps
-      local: [], // local level: city council, county commissioner
-      other: []
+      local: [] // local level: city council, county commissioner
     },
     composition: {
       federal: {
