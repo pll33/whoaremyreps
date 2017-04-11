@@ -120,7 +120,7 @@ export default {
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
         }, (error) => {
-          let message = error.body.error.message
+          let message = error.body.message
           this.locationInput.locateError = true
           this.locationInput.placeholder = 'Error: ' + message
           this.locationInput.value = ''
