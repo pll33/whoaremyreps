@@ -59,7 +59,7 @@ export default {
   name: 'privacy-policy',
   data () {
     return {
-      lastUpdatedDate: 'March 12, 2017' // TO-DO: update on site launch date
+      lastUpdatedDate: 'April 11, 2017'
     }
   }
 }
