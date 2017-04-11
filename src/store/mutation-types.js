@@ -1,3 +1,4 @@
 export const SET_API_DATA = 'SET_API_DATA'
 export const SET_REP_INFO = 'SET_REP_INFO'
+export const SET_REP_ERROR = 'SET_REP_ERROR'
 export const SET_ABBREVIATION = 'SET_ABBREVIATION'

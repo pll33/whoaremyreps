@@ -1,6 +1,6 @@
 <template>
   <div class="executive-info">
-    <div v-if="info">
+    <div v-if="info && !info.error">
       <div class="info-section">
         <h3>Bills signed into law <span v-if="info.laws.length > 0" class="heading-desc">(last {{ info.laws.length }} bills)</span></h3>
         <table class="td-left-3" v-if="info.laws && info.laws.length > 0">
@@ -20,11 +20,12 @@
         </table>
         <p v-else><i class="fa fa-exclamation-circle"></i> Up-to-date information available at <a :href="legiscan_url" rel="noopener" target="_blank">LegiScan.com</a></p>
       </div>
-
-      <div class="info-error" v-if="info.error && info.error.message">
-        <error-message :message="info.error.message"></error-message>
-      </div>
     </div>
+
+    <div class="info-error" v-else-if="info && info.error">
+      <error-message :message="'Encountered an issue while loading additional information: ' + info.error"></error-message>
+    </div>
+
     <div class="info-loading" v-else>
       <p>Loading additional information...</p>
       <loader-default></loader-default>

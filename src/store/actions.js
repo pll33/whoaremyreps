@@ -12,7 +12,8 @@ export const getPresidentInfo = ({ commit }, { slug }) => {
       let infoObj = response.body.info
       commit(types.SET_REP_INFO, { slug, infoObj })
     }, (error) => {
-      console.log('getPresidentInfo error:', error)
+      let errorMessage = error.body.message
+      commit(types.SET_REP_ERROR, { slug, errorMessage })
     })
 }
 
@@ -23,7 +24,8 @@ export const getLegislatorInfoFederal = ({ commit }, { slug, role, party, name, 
       let infoObj = response.body.info
       commit(types.SET_REP_INFO, { slug, infoObj })
     }, (error) => {
-      console.log('getLegislatorInfoFederal error:', error)
+      let errorMessage = error.body.message
+      commit(types.SET_REP_ERROR, { slug, errorMessage })
     })
 }
 
@@ -34,7 +36,8 @@ export const getGovernorInfo = ({ commit, state }, { slug }) => {
       let infoObj = response.body.info
       commit(types.SET_REP_INFO, { slug, infoObj })
     }, (error) => {
-      console.log('getGovernorInfo error:', error)
+      let errorMessage = error.body.message
+      commit(types.SET_REP_ERROR, { slug, errorMessage })
     })
 }
 
@@ -46,8 +49,7 @@ export const getLegislatorInfoState = ({ commit, state }, { slug, role, party, n
       let infoObj = response.body.info
       commit(types.SET_REP_INFO, { slug, infoObj })
     }, (error) => {
-      console.log('getLegislatorInfoState error:', error)
-      // infoObj.error =
-      // commit(types.SET_REP_INFO, { slug, error: error... })
+      let errorMessage = error.body.message
+      commit(types.SET_REP_ERROR, { slug, errorMessage })
     })
 }

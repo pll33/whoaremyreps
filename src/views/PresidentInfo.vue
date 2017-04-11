@@ -1,9 +1,9 @@
 <template>
   <div class="executive-info">
-    <div v-if="info">
+    <div v-if="info && !info.error">
       <div class="info-section">
         <h3>Bills signed into law <span class="heading-desc" v-if="info.laws && info.laws.length > 0">(last {{ info.laws.length }} bills)</span></h3>
-        <table v-if="info && info.laws" class="td-left-3 td-sm-hide-4">
+        <table v-if="info.laws" class="td-left-3 td-sm-hide-4">
           <tr>
             <th>Date signed</th>
             <th>Bill #</th>
@@ -29,7 +29,7 @@
 
       <div class="info-section">
         <h3>Executive Orders <span class="heading-desc" v-if="info.orders && info.orders.length > 0">(last {{ info.orders.length }} orders)</span></h3>
-        <table v-if="info && info.orders" class="td-left-3 td-sm-hide-2">
+        <table v-if="info.orders" class="td-left-3 td-sm-hide-2">
           <tr>
             <th>Date</th>
             <th>Number</th>
@@ -43,7 +43,7 @@
         </table>
       </div>
 
-      <div class="info-section" v-if="info && info.proclamations">
+      <div class="info-section" v-if="info.proclamations">
         <h3>Proclamations</h3>
         <table class="td-left-2">
           <tr>
@@ -57,7 +57,7 @@
         </table>
       </div>
 
-      <div class="info-section" v-if="info && info.memoranda">
+      <div class="info-section" v-if="info.memoranda">
         <h3>Presidential Memoranda</h3>
         <table class="td-left-2">
           <tr>
@@ -70,11 +70,10 @@
           </tr>
         </table>
       </div>
+    </div>
 
-      <div class="info-error" v-if="info.error && info.error.message">
-        <error-message :message="info.error.message"></error-message>
-      </div>
-
+    <div class="info-error" v-else-if="info && info.error">
+      <error-message :message="'Encountered an issue while loading additional information: ' + info.error"></error-message>
     </div>
 
     <div class="info-loading" v-else>
@@ -93,20 +92,17 @@ export default {
   components: { ErrorMessage, LoaderDefault },
   data () {
     return {
-      info: null,
-      loaded: false
+      info: null
     }
   },
   mounted () {
     let rep = this.$store.state.apiData.representatives[this.$store.state.route.params.rep]
     if (rep && rep.info && rep.info.orders) {
       this.info = rep.info
-      this.loaded = true
     } else {
       this.$store.dispatch('getPresidentInfo', { slug: this.slug })
         .then(() => {
           this.info = this.$store.getters.getRepresentativeInfo
-          this.loaded = true
         })
     }
   }

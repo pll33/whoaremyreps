@@ -1,6 +1,6 @@
 <template>
   <div class="legislator-info legislator-federal">
-    <div v-if="info">
+    <div v-if="info && !info.error">
       <h3 class="text-center" v-if="info.resources && info.resources.term_end">Next election: {{ info.resources.term_end }}</h3>
 
       <div class="info-section" v-if="info.resources">
@@ -29,11 +29,11 @@
 
       <div class="info-section" v-if="info.committees">
         <h3>Committee Positions</h3>
-        <ul class="committees" v-if="info.committees">
+        <ul class="committees" v-if="info.committees && info.committees.length > 0">
           <li v-for="com in info.committees">{{ com.title }}, <span class="text-italic">{{ com.committee }}</span></li>
         </ul>
-        <error-message v-else-if="info.errors && info.errors.committees" message="There was an issue loading committee positions."></error-message>
-        <p v-else>No committee positions.</p>
+        <p v-else-if="info.committees && info.committees.length === 0">No committee positions.</p>
+        <error-message v-else message="There was an issue loading committee positions."></error-message>
       </div>
 
       <div class="info-section">
@@ -50,8 +50,8 @@
           <td v-bind:class="voteResultClass(vote.result)">{{vote.result}}</span><br><span class="small-text ws-pre">({{ vote.total }})</span></td>
          </tr>
         </table>
-        <error-message v-else-if="info.errors && info.errors.votes" message="There was an issue loading recent votes."></error-message>
-        <p v-else>No recent votes.</p>
+        <p v-else-if="info.votes && info.votes.length === 0">No recent votes.</p>
+        <error-message v-else message="There was an issue loading recent votes."></error-message>
       </div>
 
       <div class="info-section">
@@ -68,12 +68,12 @@
             <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
           </tr>
         </table>
-        <error-message v-else-if="info.errors && info.errors.sponsored" message="There was an issue loading recently sponsored bills."></error-message>
-        <p v-else>No recently sponsored bills.</p>
+        <p v-else-if="info.sponsored && info.sponsored.length === 0">No recently sponsored bills.</p>
+        <error-message v-else message="There was an issue loading recently sponsored bills."></error-message>
       </div>
 
       <div class="info-section">
-        <h3>Co-Sponsored Bills <span class="heading-desc"  v-if="info.cosponsored && info.cosponsored.length > 0">(last {{ info.cosponsored.length }} bills)</span></h3>
+        <h3>Co-Sponsored Bills <span class="heading-desc" v-if="info.cosponsored && info.cosponsored.length > 0">(last {{ info.cosponsored.length }} bills)</span></h3>
         <table class="td-left-3 td-sm-hide-4" v-if="info.cosponsored && info.cosponsored.length > 0">
           <tr>
             <th>Date Introduced</th>
@@ -88,14 +88,15 @@
             <td class="ws-pre">{{ bill.sponsor }}</td>
           </tr>
         </table>
-        <error-message v-else-if="info.errors && info.errors.sponsored" message="There was an issue loading recently co-sponsored bills."></error-message>
-        <p v-else>No recently co-sponsored bills.</p>
-      </div>
-
-      <div class="info-error" v-if="info.error && info.error.message">
-        <error-message :message="info.error.message"></error-message>
+        <p v-else-if="info.cosponsored && info.cosponsored.length === 0">No recently co-sponsored bills.</p>
+        <error-message v-else message="There was an issue loading recently co-sponsored bills."></error-message>
       </div>
     </div>
+
+    <div class="info-error" v-else-if="info && info.error">
+      <error-message :message="'Encountered an issue while loading additional information: ' + info.error"></error-message>
+    </div>
+
     <div class="info-loading" v-else>
       <p>Loading additional information...</p>
       <loader-default></loader-default>
@@ -112,15 +113,13 @@ export default {
   components: { ErrorMessage, LoaderDefault },
   data () {
     return {
-      info: null,
-      loaded: false
+      info: null
     }
   },
   mounted () {
     let rep = this.$store.state.apiData.representatives[this.$store.state.route.params.rep]
     if (rep && rep.info && rep.info.resources) {
       this.info = rep.info
-      this.loaded = true
     } else {
       this.$store.dispatch('getLegislatorInfoFederal', {
         slug: this.slug,
@@ -130,7 +129,6 @@ export default {
         ocdId: this.ocd
       }).then(() => {
         this.info = this.$store.getters.getRepresentativeInfo
-        this.loaded = true
       })
     }
   },

@@ -159,7 +159,7 @@ ul.social-media li {
     margin-bottom: 0;
   }
 
-  .info-error {
+  .info-error p {
     text-align: center;
   }
 

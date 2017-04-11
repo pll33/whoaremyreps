@@ -1,8 +1,8 @@
 <template>
   <div class="legislator-info legislator-state">
-    <div v-if="info">
+    <div v-if="info && !info.error">
       <div class="info-section">
-        <div v-if="info && info.resources">
+        <div v-if="info.resources">
           <div class="offices">
             <div class="office" v-for="office in info.resources.offices">
               <h4>{{ office.name }}</h4>
@@ -31,9 +31,7 @@
           </ul>
           <p v-else>No committee positions.</p>
         </div>
-        <div v-else-if="info.errors && info.errors.resources">
-          <error-message message="There was an issue loading committee positions."></error-message>
-        </div>
+        <error-message v-else message="There was an issue loading resources and committee positions."></error-message>
       </div>
       <div class="info-section">
         <h3>Sponsored Bills <span class="heading-desc">(last 10 bills)</span></h3>
@@ -54,14 +52,15 @@
             <td>{{ bill.created_at }}</td>
           </tr>
         </table>
-        <error-message v-else-if="info.errors && info.errors.sponsored" message="There was an issue loading sponsored bills."></error-message>
-        <p v-else>No recently sponsored bills.</p>
-      </div>
-
-      <div class="info-error" v-if="info.error && info.error.message">
-        <error-message :message="info.error.message"></error-message>
+        <p v-else-if="info.sponsored && info.sponsored.length === 0">No recently sponsored bills.</p>
+        <error-message v-else message="There was an issue loading sponsored bills."></error-message>
       </div>
     </div>
+
+    <div class="info-error" v-else-if="info && info.error">
+      <error-message :message="'Encountered an issue while loading additional information: ' + info.error"></error-message>
+    </div>
+
     <div class="info-loading" v-else>
       <p>Loading additional information...</p>
       <loader-default></loader-default>
@@ -78,15 +77,13 @@ export default {
   components: { ErrorMessage, LoaderDefault },
   data () {
     return {
-      info: null,
-      loaded: false
+      info: null
     }
   },
   mounted () {
     let rep = this.$store.state.apiData.representatives[this.$store.state.route.params.rep]
     if (rep && rep.info && rep.info.resources) {
       this.info = rep.info
-      this.loaded = true
     } else {
       this.$store.dispatch('getLegislatorInfoState', {
         slug: this.slug,
@@ -96,7 +93,6 @@ export default {
       })
       .then(() => {
         this.info = this.$store.getters.getRepresentativeInfo
-        this.loaded = true
       })
     }
   },
