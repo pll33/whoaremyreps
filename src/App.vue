@@ -147,7 +147,6 @@ body {
 
   h1 { 
     margin: 25px 0;
-    font-size: 3em;
   }
 
   ul.navbar,
@@ -202,7 +201,7 @@ ul.navbar li a {
 
   @media screen and (max-width: 640px) {
     font-size: 20px;
-    padding: 10px 25px;
+    padding: 10px 15px;
   }
 
   @media screen and (min-width: 641px) {
@@ -292,7 +291,7 @@ ul.nav-simple li a {
 @media screen and (min-width: 641px) {
   .start {
     header h1 {
-      font-size: 2.75em;
+      font-size: 3em;
     }
   }
 }

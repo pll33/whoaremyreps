@@ -209,6 +209,10 @@ ul.social-media li {
 }
 
 @media screen and (max-width: 640px) {
+  .rep-page .position {
+    font-size: 15px;
+  }
+
   .rep-detail { width: 90%; }
 
   .info-section h3 {

@@ -77,7 +77,7 @@ export default {
   }
 
   .rep-item-position {
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 
