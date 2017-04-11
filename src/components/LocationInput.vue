@@ -143,11 +143,8 @@ $input-outline-color: #FFF;
 $hover-border-color: #333;
 $error-border-color: #ef8b80;
 
-.start {
-  .locate-inputs {
+.start .locate-inputs {
     margin-top: 10px;
-    transform: scale(1.25, 1.25);
-  }
 }
 
 .locate-inputs {
@@ -218,6 +215,12 @@ $error-border-color: #ef8b80;
 
   &:active {
     background: #AAA;
+  }
+}
+
+@media screen and (min-width: 641px) {
+  .start .locate-inputs {
+    transform: scale(1.25, 1.25);
   }
 }
 </style>

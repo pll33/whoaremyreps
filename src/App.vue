@@ -274,7 +274,7 @@ ul.nav-simple li a {
 @media screen and (max-width: 640px) {
   .start {
     header h1 {
-      font-size: 2.75em;
+      font-size: 2.25em;
     }
   }
 
@@ -286,6 +286,14 @@ ul.nav-simple li a {
 
   .container {
     max-width: 90%;
+  }
+}
+
+@media screen and (min-width: 641px) {
+  .start {
+    header h1 {
+      font-size: 2.75em;
+    }
   }
 }
 
