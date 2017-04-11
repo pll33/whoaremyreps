@@ -1,6 +1,6 @@
 # WhoAreMyReps
 
-> A Vue.js project
+Information on federal, state, and local-level U.S. representatives based on user-input address or geolocation
 
 ## Build Setup
 
@@ -8,11 +8,9 @@
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve with hot reload at localhost:8085
 npm run dev
 
 # build for production with minification
 npm run build
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
