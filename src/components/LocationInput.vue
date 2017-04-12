@@ -57,7 +57,7 @@ export default {
                 this.$store.dispatch('setData', response.body.data)
               }
             }, (error) => {
-              console.log('Error looking up address from localStorage (' + storedData.address ') - ', error.body.message)
+              console.log('Error looking up address from localStorage (' + storedData.address + ') - ', error.body.message)
               this._setInputError(error.body.message)
             })
         }
