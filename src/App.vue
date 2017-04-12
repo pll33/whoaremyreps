@@ -122,6 +122,7 @@ body {
 }
 
 .wrapper {
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -134,7 +135,7 @@ body {
 }
 
 .content {
-  flex: 1;
+  flex: 1 0 auto;
   padding: 25px 0;
 }
 

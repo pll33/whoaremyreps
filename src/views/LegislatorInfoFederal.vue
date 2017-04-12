@@ -13,7 +13,7 @@
             <a :href="'https://www.govtrack.us/congress/members/' + info.resources.govtrack_id" title="GovTrack.us" target="_blank" rel="noopener"><i class="fa fa-university"></i>GovTrack.us</a>
           </li>
           <li v-if="info.resources.crp_id">
-            <a :href="'http://www.opensecrets.org/politicians/summary.php?cid=' + info.resources.crp_id" title="OpenSecrets" target="_blank" rel="noopener"><i class="fa fa-money"></i>OpenSecrets</a>
+            <a :href="'https://www.opensecrets.org/politicians/summary.php?cid=' + info.resources.crp_id" title="OpenSecrets" target="_blank" rel="noopener"><i class="fa fa-money"></i>OpenSecrets</a>
           </li>
           <li v-if="info.resources.ballotpedia_url">
             <a :href="'https://ballotpedia.org/' + info.resources.ballotpedia_url" title="Ballotpedia" rel="noopener"><i class="fa fa-check-square-o"></i>Ballotpedia</a>
