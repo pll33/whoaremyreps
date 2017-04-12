@@ -1,9 +1,9 @@
 <template>
   <div class="locate-inputs">
-    <button v-on:click="locate"><i class="fa fa-map-marker"></i></button>
+    <button v-on:click="locate" type="button"><i class="fa fa-map-marker"></i></button>
     <span class="search-icon"><i class="fa" v-bind:class="iconType"></i></span>
     <input class="search-input" v-bind:class="{ error: locationInput.locateError }" v-on:keyup.enter="submit" type="text" v-bind:placeholder="locationInput.placeholder" v-model="locationInput.value" />
-    <button v-on:click="submit"><i class="fa fa-search"></i></button>
+    <button v-on:click="submit" type="submit"><i class="fa fa-search"></i></button>
   </div>
 </template>
 
