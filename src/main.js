@@ -1,9 +1,10 @@
+import 'babel-polyfill'
+
 import Vue from 'vue'
 import store from './store'
 import router from './router'
 import { sync } from 'vuex-router-sync'
 import VueResource from 'vue-resource'
-import 'babel-polyfill'
 
 import App from './App'
 
