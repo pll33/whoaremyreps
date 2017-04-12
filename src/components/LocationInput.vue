@@ -73,7 +73,7 @@ export default {
     _locateError: function (err) {
       if (err) {
         this.locationInput.locateError = true
-        this.locationInput.placeholder = 'Your address'
+        this.locationInput.placeholder = 'Geolocation error. Please enter your address.'
         console.log('Geolocation error: ', JSON.stringify(err))
       }
     },

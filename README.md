@@ -14,3 +14,7 @@ npm run dev
 # build for production with minification
 npm run build
 ```
+
+## Supported Browsers
+
+Chrome, Firefox, Opera, Safari, Edge, IE11, IE10
