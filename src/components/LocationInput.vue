@@ -57,7 +57,7 @@ export default {
                 this.$store.dispatch('setData', response.body.data)
               }
             }, (error) => {
-              console.log('Location submit error:', error)
+              console.log('Error looking up address from localStorage:', JSON.stringify(error))
             })
         }
       }
@@ -73,7 +73,7 @@ export default {
       if (err) {
         this.locationInput.locateError = true
         this.locationInput.placeholder = 'Your address'
-        console.log('Geolocation error: ', err)
+        console.log('Geolocation error: ', JSON.stringify(err))
       }
     },
     _locateSuccess: function (position) {
@@ -97,7 +97,7 @@ export default {
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
         }, (error) => {
-          console.log('Location submit error:', error)
+          console.log('Error looking up geolocation:', JSON.stringify(error))
         })
     },
     submit: function () {
@@ -124,7 +124,7 @@ export default {
           this.locationInput.locateError = true
           this.locationInput.placeholder = 'Error: ' + message
           this.locationInput.value = ''
-          console.log('Location submit error: ', error)
+          console.log('Error looking up address: ', JSON.stringify(error))
         })
     },
     locate: function () {
