@@ -121,9 +121,15 @@ body {
   margin: 0;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .app {
   min-height: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
 
