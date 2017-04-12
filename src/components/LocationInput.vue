@@ -57,7 +57,7 @@ export default {
                 this.$store.dispatch('setData', response.body.data)
               }
             }, (error) => {
-              console.log('Error looking up address from localStorage:', error.body.message)
+              console.log('Error looking up address from localStorage (' + storedData.address ') - ', error.body.message)
               this._setInputError(error.body.message)
             })
         }
@@ -98,7 +98,7 @@ export default {
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
         }, (error) => {
-          console.log('Error looking up geolocation:', error.body.message)
+          console.log('Error looking up geolocation (' + latlng + ') - ', error.body.message)
           this._setInputError(error.body.message)
         })
     },
@@ -127,7 +127,7 @@ export default {
             if (this.$store.state.route.path !== '/all') this.$router.push('/all')
           }
         }, (error) => {
-          console.log('Error looking up address: ', error.body.message)
+          console.log('Error looking up address (' + address + ') - ', error.body.message)
           this._setInputError(error.body.message)
         })
     },
