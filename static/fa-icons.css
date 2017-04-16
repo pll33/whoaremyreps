@@ -54,9 +54,6 @@ i, cite, em, var, address, dfn {
 .fa-square:before {
   content: "\65";
 }
-.fa-square-o:before {
-  content: "\66";
-}
 .fa-facebook-square:before {
   content: "\67";
 }
@@ -114,18 +111,6 @@ i, cite, em, var, address, dfn {
 .fa-print:before {
   content: "\46";
 }
-.fa-youtube-play:before {
-  content: "\71";
-}
-.fa-map-o:before {
-  content: "\77";
-}
-.fa-map-pin:before {
-  content: "\78";
-}
-.fa-map:before {
-  content: "\75";
-}
 .fa-comment-o:before {
   content: "\42";
 }
@@ -136,4 +121,7 @@ i, cite, em, var, address, dfn {
 .fa-exclamation-triangle:before {
   content: "\44";
   vertical-align: text-top;
+}
+.fa-home:before {
+  content: "\45";
 }

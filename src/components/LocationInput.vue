@@ -1,7 +1,7 @@
 <template>
   <div class="locate-inputs">
     <button v-on:click="locate" type="button"><i class="fa fa-map-marker"></i></button>
-    <span class="search-icon"><i class="fa" v-bind:class="iconType"></i></span>
+    <span class="search-icon"><i class="fa" v-bind:class="iconClass"></i></span>
     <input class="search-input" v-bind:class="{ error: locationInput.locateError }" v-on:keyup.enter="submit" type="text" v-bind:placeholder="locationInput.placeholder" v-model="locationInput.value" />
     <button v-on:click="submit" type="submit"><i class="fa fa-search"></i></button>
   </div>
@@ -17,7 +17,7 @@ export default {
       locationInput: {
         placeholder: 'Your address',
         locateError: false,
-        searchType: 'search',
+        icon: 'search',
         value: ''
       },
       locationData: {
@@ -28,9 +28,9 @@ export default {
     }
   },
   computed: {
-    iconType () {
-      let searchType = this.locationInput.searchType
-      switch (searchType) {
+    iconClass () {
+      let icon = this.locationInput.icon
+      switch (icon) {
         case 'search':
           return 'fa-search'
         case 'locate':
@@ -41,13 +41,13 @@ export default {
     }
   },
   methods: {
-    _retrieveLocalStorage: function () {
+    _retrieveLocalStorage () {
       // get saved address from local storage
       if (typeof window.localStorage !== 'undefined') {
         let storedData = JSON.parse(window.localStorage.getItem('__whoaremyreps__userData'))
         if (storedData && storedData.address) {
           this.locationInput.value = storedData.address
-          this.locationInput.searchType = 'stored'
+          this.locationInput.icon = 'stored'
 
           let encodedAddress = encodeURIComponent(storedData.address)
           this.$http.get('/api/reps?address=' + encodedAddress)
@@ -63,24 +63,23 @@ export default {
         }
       }
     },
-    _saveToLocalStorage: function (address) {
+    _saveToLocalStorage (address) {
       if (typeof window.localStorage !== 'undefined') {
         let timestamp = new Date().getTime()
         let dataObj = { address, timestamp }
         window.localStorage.setItem('__whoaremyreps__userData', JSON.stringify(dataObj))
       }
     },
-    _locateError: function (err) {
+    _locateError (err) {
       if (err) {
         this.locationInput.locateError = true
         this.locationInput.placeholder = 'Geolocation error. Please enter your address.'
         console.log('Geolocation error: ', JSON.stringify(err))
       }
     },
-    _locateSuccess: function (position) {
-      this.locationInput.locateError = false
-      this.locationInput.placeholder = 'Your address'
-      this.locationInput.searchType = 'locate'
+    _locateSuccess (position) {
+      this._resetInputError()
+      this.locationInput.icon = 'locate'
 
       let latlng = position.coords.latitude + ',' + position.coords.longitude
       let encodedGeo = encodeURIComponent(latlng)
@@ -102,15 +101,18 @@ export default {
           this._setInputError(error.body.message)
         })
     },
-    _setInputError: function (errorMessage) {
+    _setInputError (errorMessage) {
       this.locationInput.locateError = true
       this.locationInput.placeholder = 'Error: ' + errorMessage
       this.locationInput.value = ''
     },
-    submit: function () {
+    _resetInputError () {
       this.locationInput.locateError = false
       this.locationInput.placeholder = 'Your address'
-      this.locationInput.searchType = 'search'
+    },
+    submit () {
+      this._resetInputError()
+      this.locationInput.icon = 'search'
 
       let address = this.locationInput.value
       let encodedAddress = encodeURIComponent(address)
@@ -131,11 +133,11 @@ export default {
           this._setInputError(error.body.message)
         })
     },
-    locate: function () {
+    locate () {
       navigator.geolocation.getCurrentPosition(this._locateSuccess, this._locateError)
       this.locationInput.locateError = false
       this.locationInput.placeholder = 'Loading address...'
-      this.locationInput.searchType = 'locate'
+      this.locationInput.icon = 'locate'
       this.locationInput.value = ''
     }
   }
