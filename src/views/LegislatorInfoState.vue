@@ -8,7 +8,7 @@
               <h4>{{ office.name }}</h4>
               <div class="office-info" v-bind:class="{ inline: !checkForNewline(office.address) }">
                 <span class="address" v-bind:class="{ 'ws-pre': checkForNewline(office.address) }">{{ office.address }}</span>
-                <span v-if="office.phone"><br><i class="fa fa-phone"></i> {{ office.phone }} (Office)</span>
+                <span v-if="office.phone"><br><i class="fa fa-phone"></i> <a v-bind:href="'tel:'+office.phone.replace(/ /g,'')">{{ office.phone }}</a> (Office)</span>
                 <span v-if="office.fax"><br><i class="fa fa-fax"></i> {{ office.fax }} (Fax)</span>
                 <span v-if="office.email"><br><i class="fa fa-envelope"></i> {{ office.email }}</span>
               </div>

@@ -30,7 +30,7 @@
             </span>
           </div>
           <div class="phones" v-for="num in rep.phones">
-            <span><i class="fa fa-phone"></i> {{ num }}</span>
+            <span><i class="fa fa-phone"></i> <a v-bind:href="'tel:'+num.replace(/ /g,'')">{{ num }}</a></span>
           </div>
         </div>
         <div class="rep-detail" v-if="rep.hasInfo">
