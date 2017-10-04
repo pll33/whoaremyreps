@@ -15,7 +15,7 @@ export default {
   data () {
     return {
       locationInput: {
-        placeholder: 'Your address',
+        placeholder: 'Your address (USA only)',
         locateError: false,
         icon: 'search',
         value: ''
@@ -73,7 +73,7 @@ export default {
     _locateError (err) {
       if (err) {
         this.locationInput.locateError = true
-        this.locationInput.placeholder = 'Geolocation error. Please enter your address.'
+        this.locationInput.placeholder = 'Geolocation error. Please enter your address. (USA only)'
         console.log('Geolocation error: ', JSON.stringify(err))
       }
     },
@@ -108,7 +108,7 @@ export default {
     },
     _resetInputError () {
       this.locationInput.locateError = false
-      this.locationInput.placeholder = 'Your address'
+      this.locationInput.placeholder = 'Your address (USA only)'
     },
     submit () {
       this._resetInputError()
