@@ -16,7 +16,7 @@
               <span v-if="bill.url"><a :href="bill.url" rel="noopener" target="_blank">{{ bill.id }}</a></span>
               <span v-else>{{ bill.id }}</span>
             </td>
-            <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
+            <td><span class="fw-600" v-if="bill.title">{{ bill.title }}: </span>{{ bill.summary }}</td>
             <td class="ws-pre">{{ bill.sponsor }}</td>
           </tr>
           <tr class="tr-more-info">

@@ -15,6 +15,9 @@
           <li v-if="info.resources.crp_id">
             <a :href="'https://www.opensecrets.org/politicians/summary.php?cid=' + info.resources.crp_id" title="OpenSecrets" target="_blank" rel="noopener"><i class="fa fa-money"></i>OpenSecrets</a>
           </li>
+          <li v-if="info.resources.fec_id">
+            <a :href="'https://www.fec.gov/data/candidate/' + info.resources.fec_id + '/'" title="FEC Candidate Profile" target="_blank" rel="noopener"><i class="fa fa-money"></i>FEC Profile</a>
+          </li>
           <li v-if="info.resources.ballotpedia_url">
             <a :href="'https://ballotpedia.org/' + info.resources.ballotpedia_url" title="Ballotpedia" rel="noopener"><i class="fa fa-check-square-o"></i>Ballotpedia</a>
           </li>
@@ -64,8 +67,8 @@
           </tr>
           <tr v-for="bill in info.sponsored">
             <td>{{ bill.date }}</td>
-            <td><a :href="bill.urls.congress" target="_blank" rel="noopener">{{ bill.id }}</a></td>
-            <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
+            <td><a :href="bill.congress_url" target="_blank" rel="noopener">{{ bill.id }}</a></td>
+            <td><span class="fw-600" v-if="bill.title">{{ bill.title }}: </span>{{ bill.summary }}</td>
           </tr>
         </table>
         <p v-else-if="info.sponsored && info.sponsored.length === 0">No recently sponsored bills.</p>
@@ -83,8 +86,8 @@
           </tr>
           <tr v-for="bill in info.cosponsored">
             <td>{{ bill.date }}</td>
-            <td><a :href="bill.urls.congress" target="_blank" rel="noopener">{{ bill.id }}</a></td>
-            <td><span class="fw-600" v-if="bill.short_title">{{ bill.short_title }}: </span>{{ bill.official_title }}</td>
+            <td><a :href="bill.congress_url" target="_blank" rel="noopener">{{ bill.id }}</a></td>
+            <td><span class="fw-600" v-if="bill.title">{{ bill.title }}: </span>{{ bill.summary }}</td>
             <td class="ws-pre">{{ bill.sponsor }}</td>
           </tr>
         </table>
