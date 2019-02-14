@@ -11,23 +11,30 @@ export default {
 
       let party = this.party.toLowerCase()
       switch (party) {
+        case 'democratic party':
         case 'democratic':
         case 'democrat':
         case 'd':
           return 'party-democratic'
+        case 'republican party':
         case 'republican':
         case 'r':
           return 'party-republican'
+        case 'libertarian party':
         case 'libertarian':
           return 'party-libertarian'
+        case 'green party':
         case 'green':
           return 'party-green'
+        case 'socialist party':
         case 'socialist':
           return 'party-socialist'
+        case 'progressive party':
         case 'progressive':
         case 'progressive/democratic':
           return 'party-vpp'
         case 'common sense independent':
+        case 'independent party':
         case 'independent':
           return 'party-independent'
         case 'nonpartisan':
