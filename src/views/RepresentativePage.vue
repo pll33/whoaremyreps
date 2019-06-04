@@ -32,6 +32,7 @@
           <div class="phones" v-for="num in rep.phones">
             <span><i class="fa fa-phone"></i> <a v-bind:href="'tel:'+num.replace(/ /g,'')">{{ num }}</a></span>
           </div>
+          <div class="no-info" v-if="!rep.address && !rep.channels">Social media links are not available at this time.</div>
         </div>
         <div class="rep-detail" v-if="rep.hasInfo">
           <keep-alive>
@@ -41,10 +42,10 @@
               :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party" :ocd="rep.ocd_id">
             </legislator-info-federal>
             <legislator-info-state v-else-if="!isFederal"
-              :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party"></legislator-info-state>
+              :slug="rep.slug" :role="rep.role" :name="rep.name" :party="rep.party" :ocd="rep.ocd_id">
+            </legislator-info-state>
           </keep-alive>
         </div>
-        <div class="no-info" v-if="!rep.address && !rep.channels">No contact information available.</div>
       </div>
     </div>
     <div class="text-center" v-else>

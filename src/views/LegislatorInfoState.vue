@@ -29,7 +29,7 @@
           <ul class="committees" v-if="info.resources.roles && info.resources.roles.length > 0">
             <li v-for="role in info.resources.roles">{{ role }}</li>
           </ul>
-          <p v-else>No committee positions.</p>
+          <p v-else>No committee positions found.</p>
         </div>
         <error-message v-else message="There was an issue loading resources and committee positions."></error-message>
       </div>
@@ -73,7 +73,7 @@ import LoaderDefault from '../components/LoaderDefault'
 
 export default {
   name: 'legislator-info-state',
-  props: ['slug', 'role', 'name', 'party'],
+  props: ['slug', 'role', 'name', 'party', 'ocd'],
   components: { ErrorMessage, LoaderDefault },
   data () {
     return {
@@ -89,7 +89,8 @@ export default {
         slug: this.slug,
         role: this.role,
         name: this.name,
-        party: this.party
+        party: this.party,
+        ocdId: this.ocd
       })
       .then(() => {
         this.info = this.$store.getters.getRepresentativeInfo

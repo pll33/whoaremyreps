@@ -18,7 +18,7 @@ export const getPresidentInfo = ({ commit }, { slug }) => {
 }
 
 export const getLegislatorInfoFederal = ({ commit }, { slug, role, party, name, ocdId }) => {
-  let apiUrl = '/api/info/federal/?name=' + name + '&role=' + role + '&party=' + party + '&ocdId=' + ocdId
+  let apiUrl = `/api/info/federal/?name=${name}&party=${party}&role=${role}&ocdId=${ocdId}`
   return Vue.http.get(apiUrl)
     .then((response) => {
       let infoObj = response.body.info
@@ -31,7 +31,7 @@ export const getLegislatorInfoFederal = ({ commit }, { slug, role, party, name, 
 
 export const getGovernorInfo = ({ commit, state }, { slug }) => {
   let stateAbbreviation = state.locationData.abbreviation
-  return Vue.http.get('/api/info/governor/' + stateAbbreviation)
+  return Vue.http.get(`/api/info/governor/${stateAbbreviation}`)
     .then((response) => {
       let infoObj = response.body.info
       commit(types.SET_REP_INFO, { slug, infoObj })
@@ -41,9 +41,9 @@ export const getGovernorInfo = ({ commit, state }, { slug }) => {
     })
 }
 
-export const getLegislatorInfoState = ({ commit, state }, { slug, role, party, name }) => {
+export const getLegislatorInfoState = ({ commit, state }, { slug, role, party, name, ocdId }) => {
   let stateAbbreviation = state.locationData.abbreviation
-  let apiUrl = '/api/info/state/' + stateAbbreviation + '/?name=' + name + '&party=' + party + '&role=' + role
+  let apiUrl = `/api/info/state/${stateAbbreviation}/?name=${name}&party=${party}&role=${role}&ocdId=${ocdId}`
   return Vue.http.get(apiUrl)
     .then((response) => {
       let infoObj = response.body.info
