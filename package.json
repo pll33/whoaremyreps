@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
-    "node-sass": "^3.13.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
     "vue": "^2.0.1",
